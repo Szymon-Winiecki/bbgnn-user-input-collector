@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>input graph generator</title>
+
+        <!-- bootstrap css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+        <!-- our css -->
+        <link href="css/index.css" rel="stylesheet">
+
+        <!-- our js -->
+        <script src="js/KeyboardInputData.js" type="module"></script>
+        <script src="js/main.js" type="module"></script>
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <h1>Welcome!</h1>
+            </div>
+            <div class="row col-12">
+                <form class="border p-3 row">
+                    <div class="mb-3 col-12">
+                      <h3 id="phrase-to-retype">If you see this you should enable JS in your browser</h3>
+                    </div>
+                    <div class="mb-3 col-12">
+                      <label for="phrase" class="form-label">retype the phrase here:</label>
+                      <input type="text" class="form-control" id="phrase-intput">
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary w-100" id="submit-button">Submit</button>
+                    </div>
+                    
+                  </form>
+            </div>
+        </div>
+
+        <!-- bootstrap js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </body>
+</html>
