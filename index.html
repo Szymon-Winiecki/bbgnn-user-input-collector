@@ -14,6 +14,8 @@
 
         <!-- our js -->
         <script src="js/KeyboardInputData.js" type="module"></script>
+        <script src="js/PhraseInputController.js" type="module"></script>
+        <script src="js/ListController.js" type="module"></script>
         <script src="js/main.js" type="module"></script>
     </head>
     <body>
@@ -22,20 +24,59 @@
             <div class="d-flex justify-content-center">
                 <h1>Welcome!</h1>
             </div>
-            <div class="row col-12">
-                <form class="border p-3 row">
-                    <div class="mb-3 col-12">
-                      <h3 id="phrase-to-retype">If you see this you should enable JS in your browser</h3>
+            <div class="row">
+                <div class="col-6">
+
+                    <form class="col-12">
+                        <div class="border p-3">
+                            <div class="mb-3 col-12">
+                                <h3>User</h3>
+                            </div>
+                            <div class="mb-3 col-12">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">username</span>
+                                    <input type="text" list="predefined-users" class="form-control" placeholder="Username" aria-label="Username">
+                                    <button class="btn btn-outline-secondary" type="button" id="change-user-button">Change</button>
+                                    <datalist id="predefined-users">
+                                        <option value="Szymon"></option>
+                                        <option value="Monika"></option>
+                                        <option value="Paweł"></option>
+                                        <option value="Patryk"></option>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border p-3 mt-4">
+                            <div class="mb-3 col-12">
+                                <h3 id="phrase-to-retype">If you see this you should enable JS in your browser</h3>
+                            </div>
+                            <div class="mb-3 col-12">
+                                <label for="phrase-intput" class="form-label">retype the phrase here:</label>
+                                <input type="text" autocomplete="off" class="form-control" id="phrase-intput" aria-describedby="phrase-intput-help">
+                                <div id="phrase-intput-help" class="form-text invisible">The data collection process will end if you click outside the text field.</div>
+                            </div>
+                            <div class="col-12 row mx-0 gx-4">
+                                <div class="col-6 ps-0"><button type="button" class="btn btn-primary w-100" id="submit-button">Submit</button></div>
+                                <div class="col-6 pe-0"><button type="button" class="btn btn-danger w-100" id="cancel-button">Cancel</button></div>
+                                
+                                
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="col-6">
+                    <div class="col-12 border h-100">
+
                     </div>
-                    <div class="mb-3 col-12">
-                      <label for="phrase" class="form-label">retype the phrase here:</label>
-                      <input type="text" class="form-control" id="phrase-intput">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="col-12 border h-100 mt-4">
+
                     </div>
-                    <div class="col-12">
-                        <button type="button" class="btn btn-primary w-100" id="submit-button">Submit</button>
-                    </div>
-                    
-                  </form>
+                </div>
             </div>
         </div>
 

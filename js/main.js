@@ -8,7 +8,14 @@ const phrases = [
 
 const phraseToRetypeId = "phrase-to-retype";
 const retypeInputId = "phrase-intput";
+const retypeInputhelperId = "phrase-intput-help";
 const submitButtonId = "submit-button";
+const cancelButtonId = "cancel-button";
+
+let phraseInputElement;
+let submitButtonElement;
+let cancelButtonElement;
+let phraseIntputHelpElement;
 
 let currentKeyboardInputData;
 let currentPhrase;
@@ -17,17 +24,36 @@ let currentUser;
 window.onload = Main;
 
 function Main(){
-    AddListeners();
+    GetElements();
+    AddPhraseInputListeners();
 
-    const submitButtonElement = document.getElementById(submitButtonId);
-    if(submitButtonElement){
-        submitButtonElement.addEventListener('click', Submit)
-    }
-    else{
-        console.error(`Could not find phrase element(id="${phraseToRetypeId}")`);
-    }
+    submitButtonElement.addEventListener('click', Submit);
+    cancelButtonElement.addEventListener('click', Cancel);
 
     Submit();
+}
+
+function GetElements(){
+    phraseInputElement = document.getElementById(retypeInputId);
+    if(!phraseInputElement){
+        console.error(`Could not find input element(id="${retypeInputId}")`);
+        console.error(`Could not find input element(id="${retypeInputId}")`);
+    }
+
+    submitButtonElement = document.getElementById(submitButtonId);
+    if(!submitButtonElement){
+        console.error(`Could not find submit button element(id="${submitButtonId}")`);
+    }
+
+    cancelButtonElement = document.getElementById(cancelButtonId);
+    if(!cancelButtonElement){
+        console.error(`Could not find cancel button element(id="${cancelButtonId}")`);
+    }
+
+    phraseIntputHelpElement = document.getElementById(retypeInputhelperId);
+    if(!phraseIntputHelpElement){
+        console.error(`Could not find help text element(id="${retypeInputhelperId}")`);
+    }
 }
 
 function SetNewPhrase(id){
@@ -53,19 +79,15 @@ function GetRandomInteger(min, max) {
     return parseInt(Math.random() * (max - min) + min);
 }
 
-function AddListeners(){
-    const phraseInputElement = document.getElementById(retypeInputId);
-    if(phraseInputElement){
-        phraseInputElement.addEventListener("keydown", (event) => {
-            currentKeyboardInputData.RegisterKeyDown(event.key, event.timeStamp);
-        });
-        phraseInputElement.addEventListener("keyup", (event) => {
-            currentKeyboardInputData.RegisterKeyUp(event.key, event.timeStamp);
-        });
-    }
-    else{
-        console.error(`Could not find input element(id="${retypeInputId}")`);
-    }
+function AddPhraseInputListeners(){
+    phraseInputElement.addEventListener("focus", ShowHelperText);
+    phraseInputElement.addEventListener("blur", Pause);
+    phraseInputElement.addEventListener("keydown", (event) => {
+        currentKeyboardInputData.RegisterKeyDown(event.key, event.timeStamp);
+    });
+    phraseInputElement.addEventListener("keyup", (event) => {
+        currentKeyboardInputData.RegisterKeyUp(event.key, event.timeStamp);
+    });
 }
 
 function StartListening(){
@@ -78,18 +100,41 @@ function StopListening(){
 }
 
 function ResetPhraseInput(){
-    const phraseInputElement = document.getElementById(retypeInputId);
-    if(phraseInputElement){
-        phraseInputElement.value = "";
-    }
-    else{
-        console.error(`Could not find input element(id="${retypeInputId}")`);
-    }
+    phraseInputElement.value = "";
+}
+
+function DisablePhraseInput(){
+    phraseInputElement.setAttribute("disabled", true);
+}
+
+function EnablePhraseInput(){
+    phraseInputElement.removeAttribute("disabled");
+}
+
+function ShowHelperText(){
+    phraseIntputHelpElement.classList.remove("invisible");
+}
+
+function HideHelperText(){
+    phraseIntputHelpElement.classList.add("invisible");
 }
 
 function Submit(){
+    DisablePhraseInput();
+    HideHelperText();
     ResetPhraseInput();
     SetNewPhrase();
     StopListening();
     StartListening();
+    EnablePhraseInput();
+}
+
+function Cancel(){
+    ResetPhraseInput();
+    SetNewPhrase();
+    StartListening();
+}
+
+function Pause(){
+    DisablePhraseInput();
 }
