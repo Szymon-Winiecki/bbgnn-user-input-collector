@@ -48,7 +48,13 @@
                         </div>
                         <div class="border p-3 mt-4">
                             <div class="mb-3 col-12">
-                                <h3 id="phrase-to-retype">If you see this you should enable JS in your browser</h3>
+                                <div class="input-group mb-3" id="phrase-input-group">
+                                    <textarea  type="text" list="predefined-phrases" class="form-control form-control-lg" placeholder="Phrase to retype" aria-label="Recipient's username" id="phrase-to-retype"></textarea>
+                                    <button class="btn btn-outline-secondary" type="button" id="random-phrase-button">Random</button>
+                                    <datalist id="predefined-phrases">
+                                        <option value="Ala ma kota"></option>
+                                    </datalist>
+                                  </div>
                             </div>
                             <div class="mb-3 col-12">
                                 <label for="phrase-intput" class="form-label">retype the phrase here:</label>
