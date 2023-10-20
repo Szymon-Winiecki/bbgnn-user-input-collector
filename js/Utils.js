@@ -11,4 +11,9 @@ function GetElementById(id){
     return element;
 }
 
-export {GetRandomInteger, GetElementById};
+function TimestampToTimeString(timestamp){
+    const date = new Date(timestamp);
+    return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+}
+
+export {GetRandomInteger, GetElementById, TimestampToTimeString};

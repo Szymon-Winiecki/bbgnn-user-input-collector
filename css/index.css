@@ -1,3 +1,19 @@
 #phrase-to-retype{
     min-height: 120px;
 }
+
+.results-list-element span{
+    cursor: default;
+}
+
+.results-list-element:first-child{
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+}
+
+.results-list-element:hover{
+    background-color: var(--bs-light);
+}
+
+.results-list-element.highlighted{
+    background-color: var(--bs-info);
+}

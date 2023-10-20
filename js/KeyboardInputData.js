@@ -3,7 +3,8 @@ class KeyboardInputData
     #user;
     #phrase;
     #keysSequence;
-    #startTime;
+    #startTime; //event.timeStamp of the first keyDown event
+    #finishTime; //timestamp of submit
 
     constructor(user, phrase){
         this.#user = user;
@@ -43,6 +44,26 @@ class KeyboardInputData
                 break;
             }
         }
+    }
+
+    SetFinishTime(finishTime){
+        this.#finishTime = finishTime;
+    }
+
+    GetFinishTime(){
+        return this.#finishTime;
+    }
+
+    GetPhrase(){
+        return this.#phrase;
+    }
+
+    GetUser(){
+        return this.#user;
+    }
+
+    GetStartTime(){
+        return this.#startTime;
     }
 
     GetKeysSequence(){
