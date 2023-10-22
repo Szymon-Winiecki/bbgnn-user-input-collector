@@ -17,3 +17,8 @@
 .results-list-element.highlighted{
     background-color: var(--bs-info);
 }
+
+.nav-tabs .nav-link {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
