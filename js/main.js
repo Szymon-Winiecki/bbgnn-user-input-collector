@@ -13,11 +13,15 @@ const submitButtonId = "submit-button";
 const cancelButtonId = "cancel-button";
 const resultsListId = "results-list";
 const resultsListRowTemplateId = "results-list-element-template";
+const tablePreviewRowTemplateId = "table-preview-row-template";
 const dataPreviewSectionId = "data-preview-section";
+const tablePreviewPanelId = "table-preview-panel";
 const rawPreviewPanelId = "raw-preview-panel";
 const graphPreviewPanelId = "graph-preview-panel";
+const tableTabId = "table-preview-tab";
 const rawTabId = "raw-preview-tab";
 const graphTabId = "graph-preview-tab";
+const previewTableId = "preview-table";
 
 let phraseInputCotroller;
 let phraseController;
@@ -38,7 +42,7 @@ function Main(){
     phraseController = new PhraseController(phraseToRetypeId, randomPhraseButton);
     phraseInputCotroller = new PhraseInputController(retypeInputId, retypeInputhelperId, submitButtonId, cancelButtonId);
     listController = new ListController(resultsListRowTemplateId, resultsListId);
-    dataPreviewCotroller = new DataPreviewCotroller(dataPreviewSectionId, rawPreviewPanelId, graphPreviewPanelId, rawTabId, graphTabId);
+    dataPreviewCotroller = new DataPreviewCotroller(tablePreviewRowTemplateId, dataPreviewSectionId, tablePreviewPanelId, rawPreviewPanelId, graphPreviewPanelId, tableTabId, rawTabId, graphTabId, previewTableId);
 
     phraseController.OnRandomClicked = () => {
         phraseController.SetPhrase(PhraseController.GetRandomPhrase());
@@ -62,7 +66,7 @@ function Main(){
 
     listController.OnRowClicked = (event, id) => {
         id = ListController.ExtractIdFromIdAttr(id);
-        dataPreviewCotroller.SetRawData(JSON.stringify(keyboardInputData[id].GetAsSerializableObject(),null, 3));
+        dataPreviewCotroller.SetData(keyboardInputData[id]);
         dataPreviewCotroller.ShowPreviewSection();
     }
 
@@ -71,10 +75,11 @@ function Main(){
         RemoveInputData(id);
     }
 
+    dataPreviewCotroller.OnTableTabClicked = dataPreviewCotroller.ChangetabToTable;
     dataPreviewCotroller.OnRawTabClicked = dataPreviewCotroller.ChangeTabToRaw;
     dataPreviewCotroller.OnGraphTabClicked = dataPreviewCotroller.ChangeTabToGraph;
 
-    dataPreviewCotroller.ChangeTabToRaw();
+    dataPreviewCotroller.ChangetabToTable();
     dataPreviewCotroller.HidePreviewSection();
 
     Submit();
@@ -91,9 +96,9 @@ function StopListening(){
 
 function SaveCurrentInputData(){
     if(!currentKeyboardInputData) return;
-    currentKeyboardInputData.SetFinishTime(Date.now());
+    currentKeyboardInputData.SetFinishDate(Date.now());
     keyboardInputData.push(currentKeyboardInputData);
-    listController.AddElement(ListController.GenerateIdAttr(keyboardInputData.length - 1), currentKeyboardInputData.GetPhrase(), TimestampToTimeString(currentKeyboardInputData.GetFinishTime()));
+    listController.AddElement(ListController.GenerateIdAttr(keyboardInputData.length - 1), currentKeyboardInputData.GetPhrase(), TimestampToTimeString(currentKeyboardInputData.GetFinishDate()));
 }
 
 function RemoveInputData(id){

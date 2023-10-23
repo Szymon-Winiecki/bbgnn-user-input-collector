@@ -3,8 +3,8 @@ class KeyboardInputData
     #user;
     #phrase;
     #keysSequence;
-    #startTime; //event.timeStamp of the first keyDown event
-    #finishTime; //timestamp of submit
+    #startTime; //event.timeStamp (relative to when te page did load) of the first keyDown event
+    #finishDate; //timestamp of submit
 
     constructor(user, phrase){
         this.#user = user;
@@ -46,12 +46,12 @@ class KeyboardInputData
         }
     }
 
-    SetFinishTime(finishTime){
-        this.#finishTime = finishTime;
+    SetFinishDate(finishTime){
+        this.#finishDate = finishTime;
     }
 
-    GetFinishTime(){
-        return this.#finishTime;
+    GetFinishDate(){
+        return this.#finishDate;
     }
 
     GetPhrase(){
