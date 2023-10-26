@@ -39,7 +39,7 @@ class KeyboardInputData
     RegisterKeyUp(key, time){
         time = this.#GlobalTimeToRelativeTime(time);
         for(let i = this.#keysSequence.length - 1; i >= 0; --i){
-            if(this.#keysSequence[i].key == key){
+            if(this.#removeAccents(this.#keysSequence[i].key) == key){
                 this.#keysSequence[i].keyUpTime = time;
                 break;
             }
@@ -80,6 +80,10 @@ class KeyboardInputData
 
     #GlobalTimeToRelativeTime(localTime){
         return localTime - this.#startTime;
+    }
+
+    #removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
 };

@@ -76,8 +76,8 @@ class DataPreviewCotroller
 
         sequence.forEach((row, i) => {
             const key = row.key;
-            const keyDown = row.keyDownTime ? parseInt(row.keyDownTime) : "-";
-            const keyUp = row.keyUpTime ? parseInt(row.keyUpTime) : "-";
+            const keyDown = row.keyDownTime != undefined ? parseInt(row.keyDownTime) : "-";
+            const keyUp = row.keyUpTime != undefined ? parseInt(row.keyUpTime) : "-";
             const pressingTime = keyUp ? parseInt(keyUp- keyDown) : '-';
             const element = this.#CreateRow(i, key, keyDown, keyUp, pressingTime);
 
