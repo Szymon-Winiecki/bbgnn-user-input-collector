@@ -1,0 +1,3 @@
+.record:first-child{
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+}
