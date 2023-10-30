@@ -1,3 +1,11 @@
 .record:first-child{
     border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
 }
+
+.record:hover{
+    background-color: var(--bs-light);
+}
+
+.record.highlighted{
+    background-color: var(--bs-info);
+}

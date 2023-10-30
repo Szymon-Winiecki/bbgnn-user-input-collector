@@ -1,0 +1,7 @@
+.previewTable tr:hover{
+    background-color: var(--bs-light);
+}
+
+.previewTable tr td{
+    background-color: inherit;
+}

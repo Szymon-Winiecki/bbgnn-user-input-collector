@@ -1,6 +1,8 @@
+import style from './input_data_table.module.css'
+
 export default function InputDataTable({ inputData }) {
   return (
-    <table className="table">
+    <table className={`table ${style.previewTable}`}>
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -12,12 +14,12 @@ export default function InputDataTable({ inputData }) {
         </thead>
         <tbody>
             { inputData.map( (row, index) => {
-                return <tr class="data-row">
+                return <tr className="data-row" key={index}>
                             <td scope="row">{index}</td>
                             <td>{row.key}</td>
-                            <td>{row.keyDownTime.toFixed(2)}</td>
-                            <td>{row.keyUpTime.toFixed(2)}</td>
-                            <td>{(row.keyUpTime - row.keyDownTime).toFixed(2)}</td>
+                            <td>{row.keyDownTime != undefined ? row.keyDownTime.toFixed(2) : '-'}</td>
+                            <td>{row.keyUpTime != undefined ? row.keyUpTime.toFixed(2) : '-'}</td>
+                            <td>{(row.keyDownTime != undefined && row.keyUpTime != undefined) ? (row.keyUpTime - row.keyDownTime).toFixed(2) : '-'}</td>
                         </tr>;
             })}
 

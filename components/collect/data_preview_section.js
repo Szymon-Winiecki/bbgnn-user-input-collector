@@ -40,7 +40,7 @@ export default function DataPreviewSection({ inputData }) {
                 </div>
 
                 <div className="col-6 d-flex align-items-center">
-                    <button className="btn btn-success" onClick={handleDownloadFileClick}><i class="bi bi-file-earmark-arrow-down"></i> Download JSON</button>
+                    <button className="btn btn-success" onClick={handleDownloadFileClick}><i className="bi bi-file-earmark-arrow-down"></i> Download JSON</button>
                 </div>
             </div>
             

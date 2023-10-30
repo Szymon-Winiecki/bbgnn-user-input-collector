@@ -12,7 +12,7 @@ export default function CollectedDataRecord({ index, username, title, time, OnCl
         <span className="col-3 cursor-default">{limitStringLength(title, 12)}</span>
         <span className="col-3 text-secondary cursor-default">{timestampToString(time)}</span>
         <div className="col-1 d-flex justify-content-end">
-            <button className="btn btn-success btn-sm" onClick={(e) => {OnDownloadClick(e, index); e.stopPropagation();} }><i class="bi bi-file-earmark-arrow-down"></i></button>
+            <button className="btn btn-success btn-sm" onClick={(e) => {OnDownloadClick(e, index); e.stopPropagation();} }><i className="bi bi-file-earmark-arrow-down"></i></button>
         </div>
         <div className="col-1 d-flex justify-content-end">
           <button className="btn btn-danger btn-sm" onClick={(e) => {OnRemoveClick(e, index); e.stopPropagation();} }><i className="bi bi-trash"></i></button>
