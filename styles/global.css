@@ -1,0 +1,41 @@
+html, body, #__next{
+    min-height: 100vh;
+}
+
+main{
+    padding-bottom: 60px;   /* for footer */
+}
+
+.container{
+    min-height: 100vh;
+    position: relative;
+}
+
+.cursor-default{
+    cursor: default;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.results-list-element:hover{
+    background-color: var(--bs-light);
+}
+
+.results-list-element.highlighted{
+    background-color: var(--bs-info);
+}
+
+.nav-tabs .nav-link {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#preview-table tr:hover{
+    background-color: var(--bs-light);
+}
+
+#preview-table tr td{
+    background-color: inherit;
+}
