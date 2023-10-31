@@ -6,8 +6,9 @@ import DataPreviewSection from '../components/collect/data_preview_section';
 import { useRef, useState } from 'react';
 
 import KeyboardInputData from '../util/KeyboardInputData';
+import staticDataLoader from '../util/staticDataLoader';
 
-export default function Collect() {
+export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     
     let currentInputData = useRef(null);
     
@@ -78,6 +79,10 @@ export default function Collect() {
         setPhrase(event.target.value);
     }
 
+    function handlePhraseSelect(phrase){
+        setPhrase(phrase);
+    }
+
     function handleInputChange(event){
         setInput(event.target.value);
     }
@@ -96,8 +101,25 @@ export default function Collect() {
             <div className="row">
                 <div className="col-12 col-xl-6">
                     <form className="col-12">
-                        <UsernameForm disable={writing} OnChange={handleUsernameChange}/>
-                        <PhraseForm writing={writing} disableInput={disableInput} phrase={phrase} input={input} OnPhraseChange={handlePhraseInputChange} OnInputChange={handleInputChange} OnSubmit={submit} OnCancel={cancel} OnKeyDown={registerKeyDown} OnKeyUp={registerKeyUp} OnInputBlur={handleInputBlur}/>
+                        <UsernameForm 
+                            disable={writing} 
+                            predefinedUsernames={predefinedUsernames}
+                            OnChange={handleUsernameChange}/>
+
+                        <PhraseForm 
+                            writing={writing} 
+                            disableInput={disableInput} 
+                            phrase={phrase} 
+                            input={input} 
+                            predefinedPhrases={predefinedPhrases}
+                            OnPhraseSelect={handlePhraseSelect}
+                            OnPhraseChange={handlePhraseInputChange} 
+                            OnInputChange={handleInputChange} 
+                            OnSubmit={submit} 
+                            OnCancel={cancel} 
+                            OnKeyDown={registerKeyDown} 
+                            OnKeyUp={registerKeyUp} 
+                            OnInputBlur={handleInputBlur}/>
                     </form>
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
@@ -112,3 +134,12 @@ export default function Collect() {
         </Layout>
     );
 }
+
+export async function getServerSideProps(context) {
+    return {
+      props: {
+        predefinedUsernames: staticDataLoader.getPredefinedUsernames(),
+        predefinedPhrases: staticDataLoader.getPredefinedPhrases(),
+      },
+    };
+  }
