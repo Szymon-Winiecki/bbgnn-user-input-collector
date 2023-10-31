@@ -1,0 +1,30 @@
+.nodeCircle{
+    fill: #000000;
+    stroke: #ffffff;
+    stroke-width: 3;
+}
+
+.nodeLabel{
+    fill: #ffffff;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+.edgeLabel{
+    fill: #000000;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+.edgelabelBackground{
+    fill: #ffffff;
+}
+
+.edge{
+    stroke: #000000;
+    stroke-width: 3;
+}
+
+.selected{
+    stroke: #588335;
+}

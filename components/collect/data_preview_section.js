@@ -3,6 +3,7 @@ import NavigationTabs from "../navigation_tabs";
 import InputDataTable from "../input_data_table";
 import InputDataRaw from "../input_data_raw";
 import { downloadObjectAsJson } from "../../util/frontendFileDownload";
+import InputDataGraph from "../input_data_graph";
 
 export default function DataPreviewSection({ inputData }) {
     const tabs = [
@@ -50,7 +51,7 @@ export default function DataPreviewSection({ inputData }) {
             <div className="p-2">
                 {selectedTab == 0 && <InputDataTable inputData={ inputData ? inputData.GetKeysSequence() : []} />}
                 {selectedTab == 1 && <InputDataRaw inputData={inputData} />}
-                {selectedTab == 2 && <span>Graph preview is not suppoted yet, we apologize for any inconvenience this may cause.</span>}
+                {selectedTab == 2 && <InputDataGraph inputData={ inputData ? inputData.GetKeysSequence() : []} />}
 
             </div>
         </div>
