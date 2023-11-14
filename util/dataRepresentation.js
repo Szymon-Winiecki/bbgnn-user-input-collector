@@ -34,7 +34,7 @@ export function eventSequenceToMeanGraph(sequence){
         if(i == 0) continue;
 
         const previous = sequence[i-1];
-        const edgeString = `{${previous.key}-${event.key}`;
+        const edgeString = `${previous.key}->${event.key}`;
         const timeBetween = event.keyDownTime - previous.keyDownTime;
         if(edges.has(edgeString)){
             const edge = edges.get(edgeString);
@@ -43,6 +43,7 @@ export function eventSequenceToMeanGraph(sequence){
         }
         else{
             edges.set(edgeString, {
+                key: edgeString,
                 source: previous.key,
                 target: event.key,
                 avgTimeBetween: timeBetween,
@@ -55,4 +56,13 @@ export function eventSequenceToMeanGraph(sequence){
         nodes: Array.from(nodes.values()),
         edges: Array.from(edges.values()),
     }
+}
+
+/*   */
+export function toGraphology(ssrGraph){
+    return {
+        attributes: {},
+        nodes: ssrGraph.nodes.map( node => { return {key: node.key} } ),
+        edges: ssrGraph.edges.map( edge => { return {key: `${edge.source}->${edge.target}`, source: edge.source, target: edge.target} } )
+      };
 }
