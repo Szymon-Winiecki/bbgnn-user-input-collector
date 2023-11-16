@@ -9,6 +9,7 @@ import { useRef, useState } from 'react';
 
 import KeyboardInputData from '../util/KeyboardInputData';
 import staticDataLoader from '../util/staticDataLoader';
+import ToastSection from '../components/toast_section';
 
 export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     
@@ -22,6 +23,8 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     const [disableInput, setDisableInput] = useState(false);
 
     const [activeRecord, setActiveRecord] = useState(null);
+
+    const [toasts, setToasts] = useState([]);
 
     /*
         utility functions
@@ -48,6 +51,14 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         setInputDataList(old => [...old, currentInputData.current.GetAsSerializableObject()]);
     }
 
+    function showToast(title, body, status){
+        const toast = {
+            title: title,
+            body: body,
+            status: status,
+            time: Date.now()
+        }
+        setToasts(old => [...old, toast])
     }
 
     /*
@@ -105,6 +116,61 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         setInputDataList(old => old.filter(((_, i) => i != index)));
     }
 
+    function handleCloseToastClick(event, id){
+        if(id >= event.length && id < 0) return;
+
+        setToasts(old => [...(old.slice(0, id)), ...(old.slice(id + 1, old.length))]);
+    }
+
+    async function handleSendAllClick(event){
+
+        if(inputDataList.length == 0){
+            showToast('No data to send', `There is no any data to send`, 'warning');
+            return;
+        }
+
+        const status = await sendCollectedData(inputDataList);
+        console.log(status);
+
+        if(status == 201){
+            showToast('Data sent', `Successfully sent ${inputDataList.length} data records`, 'success');
+            setInputDataList([]);   //TODO: remove only sent data (user can create a new record while request is being processed)
+        }
+        else{
+            showToast('Sending failed', `Can't send the data`, 'danger');
+        }
+        console.log(toasts)
+    }
+
+    /*
+        API calls
+    */
+
+    async function sendCollectedData(data = []) {
+        const url = "http://127.0.0.1:3000/api/collectedData";
+        
+        try{
+            const response = await fetch(url, {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+                body: JSON.stringify(data),
+            });
+            return response.status;
+        }
+        catch (e){
+            console.log(e);
+            return 500;
+        }
+        
+    }
+
     return (
         <Layout>
             <div className="row">
@@ -147,6 +213,7 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
                     <DataPreviewSection inputData={activeRecord} />
                 </div>
             </div>
+            <ToastSection toasts={toasts} maxToasts={5} OnCloseClick={handleCloseToastClick} />
         </Layout>
     );
 }
