@@ -55,6 +55,7 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     */
 
     function submit(){
+        if(!writing) return;
         stopRecording();
         saveRecordedData();
         resetInput();
