@@ -1,6 +1,5 @@
 export default class KeyboardInputData
 {
-    #id;
     #user;
     #phrase;
     #keysSequence;
@@ -73,7 +72,7 @@ export default class KeyboardInputData
 
     GetAsSerializableObject(){
         return {
-            id: this.#id,
+            finishDate: this.#finishDate,
             user: this.#user,
             phrase: this.#phrase,
             sequence: this.#keysSequence,

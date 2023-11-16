@@ -5,7 +5,7 @@ export default function InputDataRaw({ inputData }) {
 
     return (
         <pre>
-            {JSON.stringify(inputData.GetAsSerializableObject(), null, 2)}
+            {JSON.stringify(inputData, null, 2)}
         </pre>
     );
   }

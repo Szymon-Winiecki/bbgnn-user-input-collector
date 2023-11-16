@@ -45,7 +45,9 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
 
     function saveRecordedData(){
         if(!currentInputData.current) return;
-        setInputDataList(old => [...old, currentInputData.current]);
+        setInputDataList(old => [...old, currentInputData.current.GetAsSerializableObject()]);
+    }
+
     }
 
     /*
