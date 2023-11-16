@@ -1,10 +1,10 @@
 import { useState } from "react";
-import NavigationTabs from "../navigation_tabs";
-import InputDataTable from "../input_data_table";
-import InputDataRaw from "../input_data_raw";
-import { downloadObjectAsJson } from "../../util/frontendFileDownload";
-import InputDataGraph from "../input_data_graph";
-import { eventSequenceToMeanGraph, toTorchData } from "../../util/dataRepresentation";
+import NavigationTabs from "./navigation_tabs";
+import InputDataTable from "./input_data_table";
+import InputDataRaw from "./input_data_raw";
+import { downloadObjectAsJson } from "../util/frontendFileDownload";
+import InputDataGraph from "./input_data_graph";
+import { eventSequenceToMeanGraph, toTorchData } from "../util/dataRepresentation";
 
 export default function DataPreviewSection({ inputData }) {
     const tabs = [
@@ -21,20 +21,20 @@ export default function DataPreviewSection({ inputData }) {
 
 
     function handleDownloadRAWFileClick(event){
-        const data = inputData.GetAsSerializableObject();
-        const filename = `${inputData.GetFinishDate()}_RAW`;
-        downloadObjectAsJson(data, filename);
+        const data = inputData;
+        const filename = `${inputData.finishDate}_RAW`;
+        downloadObjectAsJson(inputData, filename);
     }
 
     function handleDownloadSSRGraphFileClick(event){
-        const data = eventSequenceToMeanGraph(inputData.GetKeysSequence());
-        const filename = `${inputData.GetFinishDate()}_SSR`;
+        const data = eventSequenceToMeanGraph(inputData.sequence);
+        const filename = `${inputData.finishDate}_SSR`;
         downloadObjectAsJson(data, filename);
     }
 
     function handleDownloadTorchGraphFileClick(event){
-        const data = toTorchData(eventSequenceToMeanGraph(inputData.GetKeysSequence()), inputData.GetUser());
-        const filename = `${inputData.GetFinishDate()}_Torch`;
+        const data = toTorchData(eventSequenceToMeanGraph(inputData.sequence), inputData.user);
+        const filename = `${inputData.finishDate}_Torch`;
         downloadObjectAsJson(data, filename);
     }
 
@@ -48,10 +48,10 @@ export default function DataPreviewSection({ inputData }) {
             <div className="row">
                 <div className="col-6 p-4">
                     <div>
-                        <span className="fw-bold">user:</span> <span>{inputData.GetUser()}</span>
+                        <span className="fw-bold">user:</span> <span>{inputData.user}</span>
                     </div>
                     <div>
-                        <span className="fw-bold">phrase to retype:</span> <span>{inputData.GetPhrase()}</span>
+                        <span className="fw-bold">phrase to retype:</span> <span>{inputData.phrase}</span>
                     </div>
                 </div>
 
@@ -70,9 +70,9 @@ export default function DataPreviewSection({ inputData }) {
             <NavigationTabs tabs={tabs} selectedTab={selectedTab} OnChangeTab={ChangeTab} />
 
             <div className="p-2">
-                {selectedTab == 0 && <InputDataTable inputData={ inputData ? inputData.GetKeysSequence() : []} />}
+                {selectedTab == 0 && <InputDataTable inputData={ inputData ? inputData.sequence : []} />}
                 {selectedTab == 1 && <InputDataRaw inputData={inputData} />}
-                {selectedTab == 2 && <InputDataGraph inputData={ inputData ? inputData.GetKeysSequence() : []} />}
+                {selectedTab == 2 && <InputDataGraph inputData={ inputData ? inputData.sequence : []} />}
 
             </div>
         </div>

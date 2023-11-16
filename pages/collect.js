@@ -1,8 +1,10 @@
 import Layout from '../components/layout';
-import UsernameForm from '../components/collect/username_form';
-import PhraseForm from '../components/collect/phrase_form';
-import CollectedDataSection from '../components/collect/collected_data_section';
-import DataPreviewSection from '../components/collect/data_preview_section';
+import UsernameForm from '../components/username_form';
+import PhraseForm from '../components/phrase_form';
+import CollectedDataList from '../components/collected_data_list';
+import DataPreviewSection from '../components/data_preview_section';
+import CollectedDataControls from '../components/collected_data_controls';
+
 import { useRef, useState } from 'react';
 
 import KeyboardInputData from '../util/KeyboardInputData';
@@ -127,11 +129,14 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
                     </form>
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
-                    <CollectedDataSection 
-                        collectedData={inputDataList} 
-                        OnActiveRecordChanged={setActiveRecord}
-                        OnRemoveRecordClick={handleRecordRemoveClick}
-                        OnSendAllClick={handleSendAllClick} />
+                    <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
+                        <CollectedDataList 
+                            collectedData={inputDataList} 
+                            OnActiveRecordChanged={setActiveRecord}
+                            OnRemoveRecordClick={handleRecordRemoveClick} />
+                        <CollectedDataControls 
+                            OnSendAllClick={handleSendAllClick} />
+                    </div>
                 </div>
             </div>
             <div className="row">
