@@ -6,7 +6,7 @@ export default function CollectedDataRecord({ index, username, title, time, OnCl
   return (
     <div className={`${style.record} col-12 d-flex border-bottom p-1 align-items-center`} onClick={(e) => OnClick(e, index) }>
         <div className="col-1">
-            <input type="checkbox" className="form-check-input" />
+            <input type="checkbox" className="form-check-input" onClick={(e) => {e.stopPropagation();} }/>
         </div>
         <span className="col-3 fw-bold cursor-default">{limitStringLength(username, 12)}</span>
         <span className="col-3 cursor-default">{limitStringLength(title, 12)}</span>
