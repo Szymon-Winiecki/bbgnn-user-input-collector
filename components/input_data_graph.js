@@ -107,10 +107,6 @@ export default function InputDataGraph({ inputData }) {
                 
             </g>
         </svg>
-
-        <pre>
-            {JSON.stringify(graphData, null, 3)}
-        </pre>
         </>
     );
 }
