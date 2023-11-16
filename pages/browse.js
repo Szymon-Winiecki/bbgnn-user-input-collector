@@ -27,6 +27,14 @@ export default function Browse( ) {
         setToasts(old => [...old, toast])
     }
 
+    async function removeRecord(index){
+        const id = data[index].id;
+        const status = await sendRemoveRecordRequest(id);
+        if(status == 204){
+            setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))])
+        }
+    }
+
 
     /*
         event handlers
@@ -41,6 +49,11 @@ export default function Browse( ) {
     async function handleApplyFilters(event){
         const fetched = await getAllRecords();
         setData(fetched);
+    }
+
+    function handleRemoveRecordClick(event, index){
+
+        removeRecord(index);
     }
 
     /*
@@ -79,6 +92,39 @@ export default function Browse( ) {
         
     }
 
+    async function sendRemoveRecordRequest(id) {
+        const url = `http://127.0.0.1:3000/api/collectedData/${id}`;
+
+        try{
+            const response = await fetch(url, {
+                method: "DELETE",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+            });
+
+            if(response.ok){
+                showToast("Record removed", "Record successfully removed", "success")
+                return response.status;
+            }
+            else{
+                showToast("Can't remove record", "Try again later", "danger")
+                return response.status;
+            }
+        }
+        catch (e){
+            console.log(e);
+            showToast("Can't remove record", "Try again later", "danger");
+            return 500;
+        }
+        
+    }
+
     return (
         <Layout>
             <div className='row col-12 ms-0'>
@@ -97,7 +143,8 @@ export default function Browse( ) {
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataList 
                             collectedData={data} 
-                            OnActiveRecordChanged={setActiveRecord} />
+                            OnActiveRecordChanged={setActiveRecord}
+                            OnRemoveRecordClick={handleRemoveRecordClick} />
                     </div>
                 </div>
             </div>
