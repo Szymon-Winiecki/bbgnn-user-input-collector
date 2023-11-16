@@ -66,3 +66,14 @@ export function toGraphology(ssrGraph){
         edges: ssrGraph.edges.map( edge => { return {key: `${edge.source}->${edge.target}`, source: edge.source, target: edge.target} } )
       };
 }
+
+export function toTorchData(ssrGraph, label){
+    const nodesIndexes = new Map();
+    ssrGraph.nodes.forEach( (node, index) => nodesIndexes.set(node.key, index));
+    return {
+        x: ssrGraph.nodes.map(node => [node.key, node.avgPressingTime]),
+        edge_index: ssrGraph.edges.map(edge => [nodesIndexes.get(edge.source), nodesIndexes.get(edge.target)]),
+        edge_attr: ssrGraph.edges.map(edge => [edge.avgTimeBetween]),
+        y: label
+    }
+}

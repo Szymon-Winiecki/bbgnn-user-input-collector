@@ -4,6 +4,7 @@ import InputDataTable from "../input_data_table";
 import InputDataRaw from "../input_data_raw";
 import { downloadObjectAsJson } from "../../util/frontendFileDownload";
 import InputDataGraph from "../input_data_graph";
+import { eventSequenceToMeanGraph, toTorchData } from "../../util/dataRepresentation";
 
 export default function DataPreviewSection({ inputData }) {
     const tabs = [
@@ -19,8 +20,22 @@ export default function DataPreviewSection({ inputData }) {
     }
 
 
-    function handleDownloadFileClick(event){
-        downloadObjectAsJson(inputData.GetAsSerializableObject(), inputData.GetFinishDate());
+    function handleDownloadRAWFileClick(event){
+        const data = inputData.GetAsSerializableObject();
+        const filename = `${inputData.GetFinishDate()}_RAW`;
+        downloadObjectAsJson(data, filename);
+    }
+
+    function handleDownloadSSRGraphFileClick(event){
+        const data = eventSequenceToMeanGraph(inputData.GetKeysSequence());
+        const filename = `${inputData.GetFinishDate()}_SSR`;
+        downloadObjectAsJson(data, filename);
+    }
+
+    function handleDownloadTorchGraphFileClick(event){
+        const data = toTorchData(eventSequenceToMeanGraph(inputData.GetKeysSequence()), inputData.GetUser());
+        const filename = `${inputData.GetFinishDate()}_Torch`;
+        downloadObjectAsJson(data, filename);
     }
 
     if(!inputData){
@@ -40,8 +55,14 @@ export default function DataPreviewSection({ inputData }) {
                     </div>
                 </div>
 
-                <div className="col-6 d-flex align-items-center">
-                    <button className="btn btn-success" onClick={handleDownloadFileClick}><i className="bi bi-file-earmark-arrow-down"></i> Download JSON</button>
+                <div className="col-2 d-flex align-items-center">
+                    <button className="btn btn-success col-10 offset-1" onClick={handleDownloadRAWFileClick}><i className="bi bi-file-earmark-arrow-down"></i> RAW</button>
+                </div>
+                <div className="col-2 d-flex align-items-center">
+                    <button className="btn btn-success col-10 offset-1" onClick={handleDownloadSSRGraphFileClick}><i className="bi bi-file-earmark-arrow-down"></i> SSR Graph</button>
+                </div>
+                <div className="col-2 d-flex align-items-center">
+                    <button className="btn btn-success col-10 offset-1" onClick={handleDownloadTorchGraphFileClick}><i className="bi bi-file-earmark-arrow-down"></i> Torch Graph</button>
                 </div>
             </div>
             
