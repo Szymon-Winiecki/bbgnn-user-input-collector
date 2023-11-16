@@ -4,17 +4,13 @@ import CollectedDataRecord from "../collected_data_record";
 import { downloadObjectAsJson } from "../../util/frontendFileDownload";
 
 
-export default function CollectedDataSection({ collectedData, OnActiveRecordChanged, OnSendSelectedClick, OnRemoveSelectedClick, OnSendAllClick }) {
+export default function CollectedDataSection({ collectedData, OnActiveRecordChanged, OnSendSelectedClick, OnRemoveSelectedClick, OnSendAllClick, OnRemoveRecordClick }) {
 
     const [activeRecordIndex, setActiveRecordIndex] = useState(-1);
 
     function handleRecordClick(event, index){
         setActiveRecordIndex(index);
         OnActiveRecordChanged(index >= 0 ? collectedData[index] : null);
-    }
-
-    function handleRecordRemoveClick(event, index){
-
     }
 
     function handleDownloadFileClick(event, index){
@@ -33,7 +29,7 @@ export default function CollectedDataSection({ collectedData, OnActiveRecordChan
                         time={data.GetFinishDate()} 
                         key={data.GetFinishDate()} 
                         OnClick={handleRecordClick} 
-                        OnRemoveClick={handleRecordRemoveClick} 
+                        OnRemoveClick={OnRemoveRecordClick} 
                         OnDownloadClick={handleDownloadFileClick} />;
             })}
                 

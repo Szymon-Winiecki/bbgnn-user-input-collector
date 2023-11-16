@@ -96,6 +96,10 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         setUsername(event.target.value)
     }
 
+    function handleRecordRemoveClick(event, index){
+        setInputDataList(old => old.filter(((_, i) => i != index)));
+    }
+
     return (
         <Layout>
             <div className="row">
@@ -123,7 +127,11 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
                     </form>
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
-                    <CollectedDataSection collectedData={inputDataList} OnActiveRecordChanged={setActiveRecord} />
+                    <CollectedDataSection 
+                        collectedData={inputDataList} 
+                        OnActiveRecordChanged={setActiveRecord}
+                        OnRemoveRecordClick={handleRecordRemoveClick}
+                        OnSendAllClick={handleSendAllClick} />
                 </div>
             </div>
             <div className="row">
