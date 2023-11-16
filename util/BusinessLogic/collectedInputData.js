@@ -17,6 +17,10 @@ export function get(id){
 }
 
 export function add(data){
+    if(Array.isArray(data)){
+        console.log("array")
+        return storage.saveMany(data);
+    }
     return storage.save(data);
 }
 

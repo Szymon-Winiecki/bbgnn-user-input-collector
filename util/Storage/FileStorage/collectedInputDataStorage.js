@@ -57,6 +57,19 @@ export function save(data){
     return true;
 }
 
+export function saveMany(data){
+    const current = JSON.parse(fs.readFileSync(storageFilePath, {encoding: "utf-8"}));
+
+    data.forEach(d => {
+        d.id = registerAndGetID();
+        current.push(d);
+    });
+    
+    fs.writeFileSync(storageFilePath, JSON.stringify(current));
+
+    return true;
+}
+
 export function update(data){
     if(data.id == undefined){
         return false;
