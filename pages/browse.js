@@ -5,6 +5,9 @@ import ToastSection from '../components/toast_section';
 import CollectedDataFilters from '../components/collected_data_filters';
 
 import { useState } from 'react';
+import CollectedDataDownloadControls from '../components/collected_data_download_controls';
+import { downloadObjectAsJson } from '../util/frontendFileDownload';
+import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepresentation';
 
 export default function Browse( ) {
     
@@ -54,6 +57,32 @@ export default function Browse( ) {
     function handleRemoveRecordClick(event, index){
 
         removeRecord(index);
+    }
+
+    // all == true - download all; all == false - download selected
+    function handleDownload(all, format){
+        let dataToDownload;
+        let filename;
+        if(all){
+            if(format == "torch"){
+                dataToDownload = collectedDataToTorchData(data);
+                filename = `data_torch_${Date.now()}`;
+            }
+            else if(format == "ssr"){
+                dataToDownload = collectedDataToSSR(data);
+                filename = `data_ssr_${Date.now()}`;
+            }
+            else if(format == "raw"){
+                dataToDownload = data;
+                filename = `data_raw_${Date.now()}`;
+            }
+            
+        }
+        
+        if(dataToDownload && filename){
+            downloadObjectAsJson(dataToDownload, filename);
+        }
+        
     }
 
     /*
@@ -147,6 +176,8 @@ export default function Browse( ) {
                             collectedData={data} 
                             OnActiveRecordChanged={setActiveRecord}
                             OnRemoveRecordClick={handleRemoveRecordClick} />
+                        <CollectedDataDownloadControls 
+                            OnDownload={handleDownload}/>
                     </div>
                 </div>
             </div>

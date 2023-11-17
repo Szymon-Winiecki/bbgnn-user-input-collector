@@ -52,7 +52,7 @@ export default function CollectedDataFilters({ users, phrases, OnApplyClick }) {
             </div>
 
             <div className="col-12">
-                <button className="btn btn-success col-12" onClick={OnApplyClick}>Apply</button>
+                <button className="btn btn-primary col-12" onClick={OnApplyClick}>Apply</button>
             </div>
         </div>
   );

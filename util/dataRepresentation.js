@@ -10,7 +10,7 @@ export function cleanSequence(sequence){
     return sequence;
 }
 
-export function eventSequenceToMeanGraph(sequence){
+export function eventSequenceToMeanGraph(sequence, label=""){
     let nodes = new Map();
     let edges = new Map();
 
@@ -53,6 +53,7 @@ export function eventSequenceToMeanGraph(sequence){
     }
 
     return{
+        label: label,
         nodes: Array.from(nodes.values()),
         edges: Array.from(edges.values()),
     }
@@ -67,13 +68,31 @@ export function toGraphology(ssrGraph){
       };
 }
 
-export function toTorchData(ssrGraph, label){
+export function toTorchData(ssrGraph){
     const nodesIndexes = new Map();
     ssrGraph.nodes.forEach( (node, index) => nodesIndexes.set(node.key, index));
     return {
         x: ssrGraph.nodes.map(node => [node.key, node.avgPressingTime]),
         edge_index: ssrGraph.edges.map(edge => [nodesIndexes.get(edge.source), nodesIndexes.get(edge.target)]),
         edge_attr: ssrGraph.edges.map(edge => [edge.avgTimeBetween]),
-        y: label
+        y: ssrGraph.label
+    }
+}
+
+export function collectedDataToTorchData(data){
+    if(Array.isArray(data)){
+        return data.map( cd => toTorchData(eventSequenceToMeanGraph(cd.sequence, cd.user)));
+    }
+    else{
+        return toTorchData(eventSequenceToMeanGraph(data.sequence, data.user));
+    }
+}
+
+export function collectedDataToSSR(data){
+    if(Array.isArray(data)){
+        return data.map( cd => eventSequenceToMeanGraph(cd.sequence, cd.user));
+    }
+    else{
+        return eventSequenceToMeanGraph(data.sequence, data.user);
     }
 }
