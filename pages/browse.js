@@ -136,6 +136,8 @@ export default function Browse( ) {
                 <div className="col-12 col-xl-6">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataFilters 
+                            users={["Szymon", "Test"]}
+                            phrases={["Ala ma kota", "Jola ma jeża"]}
                            OnApplyClick={handleApplyFilters} />
                     </div>
                 </div>

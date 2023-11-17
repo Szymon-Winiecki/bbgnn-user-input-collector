@@ -16,11 +16,11 @@ export default function Layout({ page, children }) {
           <Link href="/" className='text-decoration-none text-primary'><h1>User Input Collector</h1></Link>
         </div>
         <nav className='mb-4'>
-          <ul class="nav nav-pills">
-            <li class="nav-item">
+          <ul className="nav nav-pills">
+            <li className="nav-item">
               <Link href="/collect" className={`nav-link text-decoration-none ${page == 'collect' && 'active'}`}>Collect</Link>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <Link href="/browse" className={`nav-link text-decoration-none ${page == 'browse' && 'active'}`}>Browse</Link>
             </li>
           </ul>
