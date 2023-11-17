@@ -28,7 +28,7 @@ export default function CollectedDataDownloadControls({ OnDownload }) {
                 </select>
             </div>
             <div className="col-6">
-                <button className="btn btn-success col-12" onClick={handleDownloadSelectedClick}>Download selected</button>
+                <button className="btn btn-success col-12" onClick={handleDownloadSelectedClick} disabled >Download selected</button>
             </div>
             <div className="col-6">
                 <button className="btn btn-success col-12" onClick={handleDownloadAllClick}>Download all</button>

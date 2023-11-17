@@ -130,7 +130,6 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         }
 
         const status = await sendCollectedData(inputDataList);
-        console.log(status);
 
         if(status == 201){
             showToast('Data sent', `Successfully sent ${inputDataList.length} data records`, 'success');
@@ -139,7 +138,6 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         else{
             showToast('Sending failed', `Can't send the data`, 'danger');
         }
-        console.log(toasts)
     }
 
     /*
