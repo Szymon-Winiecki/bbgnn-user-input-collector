@@ -38,8 +38,9 @@ export default class KeyboardInputData
 
     RegisterKeyUp(key, time){
         time = this.#GlobalTimeToRelativeTime(time);
+
         for(let i = this.#keysSequence.length - 1; i >= 0; --i){
-            if(this.#removeAccents(this.#keysSequence[i].key) == key){
+            if(this.#normalize(this.#keysSequence[i].key) == this.#normalize(key)){
                 this.#keysSequence[i].keyUpTime = time;
                 break;
             }
@@ -85,6 +86,10 @@ export default class KeyboardInputData
 
     #removeAccents(str) {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    #normalize(key){
+        return this.#removeAccents(key).toLowerCase();
     }
 
 };
