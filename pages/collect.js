@@ -172,7 +172,7 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     }
 
     return (
-        <Layout>
+        <Layout page="collect">
             <div className="row">
                 <div className="col-12 col-xl-6">
                     <form className="col-12">

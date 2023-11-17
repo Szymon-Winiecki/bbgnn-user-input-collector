@@ -3,7 +3,7 @@ import styles from './layout.module.css';
 import Head from 'next/head';
 import Link from 'next/link';
 
-export default function Layout({ children }) {
+export default function Layout({ page, children }) {
   return (
     <div className="container">
       <Head>
@@ -11,8 +11,21 @@ export default function Layout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="d-flex justify-content-center">
-        <Link href="/" className='text-decoration-none text-primary'><h1>User Input Collector</h1></Link>
+      <header className="d-flex flex-column justify-content-center">
+        <div className='d-flex justify-content-center'>
+          <Link href="/" className='text-decoration-none text-primary'><h1>User Input Collector</h1></Link>
+        </div>
+        <nav className='mb-4'>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <Link href="/collect" className={`nav-link text-decoration-none ${page == 'collect' && 'active'}`}>Collect</Link>
+            </li>
+            <li class="nav-item">
+              <Link href="/browse" className={`nav-link text-decoration-none ${page == 'browse' && 'active'}`}>Browse</Link>
+            </li>
+          </ul>
+        </nav>
+        
       </header>
 
       <main>{children}</main>

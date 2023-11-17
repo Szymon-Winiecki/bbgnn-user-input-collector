@@ -126,7 +126,7 @@ export default function Browse( ) {
     }
 
     return (
-        <Layout>
+        <Layout page="browse">
             <div className='row col-12 ms-0'>
                 <div className="col-12 border p-4 mb-4">
                     <span className='fs-3'>Browse and manage data stored on the server.</span>
