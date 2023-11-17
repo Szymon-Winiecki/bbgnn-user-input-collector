@@ -71,9 +71,17 @@ export function toGraphology(ssrGraph){
 export function toTorchData(ssrGraph){
     const nodesIndexes = new Map();
     ssrGraph.nodes.forEach( (node, index) => nodesIndexes.set(node.key, index));
+
+    const edges = ssrGraph.edges.map(edge => [nodesIndexes.get(edge.source), nodesIndexes.get(edge.target)]);
+    const sparse = Array.from(Array(2), () => new Array(edges.length))
+    for(let i = 0; i < edges.length; ++i){
+        sparse[0][i] = edges[i][0];
+        sparse[1][i] = edges[i][1];
+    }
+
     return {
         x: ssrGraph.nodes.map(node => [node.key, node.avgPressingTime]),
-        edge_index: ssrGraph.edges.map(edge => [nodesIndexes.get(edge.source), nodesIndexes.get(edge.target)]),
+        edge_index: sparse,
         edge_attr: ssrGraph.edges.map(edge => [edge.avgTimeBetween]),
         y: ssrGraph.label
     }
