@@ -23,6 +23,9 @@ export default function Layout({ page, children }) {
             <li className="nav-item">
               <Link href="/browse" className={`nav-link text-decoration-none ${page == 'browse' && 'active'}`}>Browse</Link>
             </li>
+            <li className="nav-item">
+              <Link href="/upload" className={`nav-link text-decoration-none ${page == 'upload' && 'active'}`}>Upload</Link>
+            </li>
           </ul>
         </nav>
         

@@ -10,6 +10,9 @@ export default function Home() {
       <div>
         <Link href="/browse">browse data</Link>
       </div>
+      <div>
+        <Link href="/upload">upload data</Link>
+      </div>
     </Layout>
   );
 }
