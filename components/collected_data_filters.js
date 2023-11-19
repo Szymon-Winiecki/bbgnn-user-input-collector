@@ -1,5 +1,5 @@
 
-export default function CollectedDataFilters({ users, phrases, OnApplyClick }) {
+export default function CollectedDataFilters({ allUsers, phrases, OnApplyClick, sortField, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
 
     return (
         <div className="col-10 offset-1 row g-2">
@@ -8,14 +8,13 @@ export default function CollectedDataFilters({ users, phrases, OnApplyClick }) {
 
             <div className="input-group mb-3">
                 <label className="input-group-text">Sort by</label>
-                <select className="form-select w-50" defaultValue="default" disabled >
+                <select className="form-select w-50" value={sortField} onChange={OnSortFieldChange} >
                     <option value="default">Choose...</option>
-                    <option value="date">Date</option>
+                    <option value="finishDate">Date</option>
                     <option value="user">User</option>
                     <option value="phrase">Phrase</option>
                 </select>
-                <select className="form-select" defaultValue="default" disabled >
-                    <option value="default">Default</option>
+                <select className="form-select" value={sortOrder} onChange={OnSortOrderChange} >
                     <option value="asc">Asc</option>
                     <option value="desc">Desc</option>
                 </select>
@@ -32,10 +31,9 @@ export default function CollectedDataFilters({ users, phrases, OnApplyClick }) {
 
             <div className="input-group mb-3">
                 <label className="input-group-text">Limit users</label>
-                <select className="form-select" multiple defaultValue={["all"]} disabled >
-                    <option value="all">All</option>
-                    {users.map( (user, index) => {
-                        return <option value={user} key={index}></option>
+                <select className="form-select" multiple value={users} onChange={OnUsersChange} >
+                    {allUsers.map( (user, index) => {
+                        return <option value={user} key={index}>{user}</option>
                     })}
                 </select>
             </div>
@@ -43,7 +41,7 @@ export default function CollectedDataFilters({ users, phrases, OnApplyClick }) {
 
             <div className="input-group mb-3">
                 <label className="input-group-text">Limit phrase</label>
-                <input type="text" list="phrases-list" className="form-control" disabled />
+                <input type="text" list="phrases-list" className="form-control" value={phrase} onChange={OnPhraseChange} />
                 <datalist id="phrases-list">
                     {phrases.map( (phrase, index) => {
                         return <option value={phrase} key={index}></option>

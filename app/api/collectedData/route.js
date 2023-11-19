@@ -3,7 +3,10 @@ import * as collectedInputData from "../../../util/BusinessLogic/collectedInputD
 
 export async function GET(request) {
     try {
-        const result = await collectedInputData.getAll()
+        const { searchParams } = new URL(request.url)
+        const query = Object.fromEntries(searchParams);
+        if(query.users) query.users = query.users.split(',');
+        const result = await collectedInputData.select(query)
         return Response.json(result, { status: 200 });
     } catch (err) {
         console.error(err);

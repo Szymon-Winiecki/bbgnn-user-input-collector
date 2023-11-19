@@ -16,6 +16,13 @@ export default function Browse( ) {
    
     const [toasts, setToasts] = useState([]);
 
+    const [query, setQuery] = useState({
+        sortField: '',
+        sortAsc: true,
+        users: [],
+        phrase: ''
+    });
+
     /*
         utility functions
     */
@@ -50,8 +57,8 @@ export default function Browse( ) {
     }
 
     async function handleApplyFilters(event){
-        const fetched = await getAllRecords();
-        setData(fetched);
+        const fetched = await selectDataFromServer();
+        setData(fetched.pageRecords);
     }
 
     function handleRemoveRecordClick(event, index){
@@ -85,12 +92,84 @@ export default function Browse( ) {
         
     }
 
+    function handleSortFieldChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.sortField = event.target.value;
+            return newq;
+        })
+    }
+
+    function handleSortOrderChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.sortAsc = (event.target.value === 'asc');
+            return newq;
+        })
+    }
+
+    function handleUsersChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.users = Array.from(event.target.selectedOptions).map(o => o.value);
+            return newq;
+        })
+        console.log(Array.from(event.target.selectedOptions).map(o => o.value));
+    }
+
+    function handlePhraseChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.phrase = event.target.value;
+            return newq;
+        })
+    }
+
     /*
         API calls
     */
 
     async function getAllRecords() {
         const url = "http://127.0.0.1:3000/api/collectedData";
+
+        try{
+            const response = await fetch(url, {
+                method: "GET",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+            });
+
+            if(response.ok){
+                return response.json();
+            }
+            else{
+                showToast("Can't fetch data", "Try again later", "danger")
+                return [];
+            }
+        }
+        catch (e){
+            console.log(e);
+            showToast("Can't fetch data", "Try again later", "danger");
+            return [];
+        }
+        
+    }
+
+    async function selectDataFromServer() {
+        
+        const searchParams = new URLSearchParams(query);
+
+
+        const url = "http://127.0.0.1:3000/api/collectedData?" + searchParams;
+
+        console.log(url);
+
 
         try{
             const response = await fetch(url, {
@@ -165,9 +244,17 @@ export default function Browse( ) {
                 <div className="col-12 col-xl-6">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataFilters 
-                            users={["Szymon", "Test"]}
+                            allUsers={["Szymon", "Test"]}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
-                           OnApplyClick={handleApplyFilters} />
+                            OnApplyClick={handleApplyFilters} 
+                            sortField={query.sortField}
+                            OnSortFieldChange={handleSortFieldChange}
+                            sortOrder={query.sortAsc ? 'asc' : 'desc'}
+                            OnSortOrderChange={handleSortOrderChange}
+                            users={query.users}
+                            OnUsersChange={handleUsersChange}
+                            phrase={query.phrase}
+                            OnPhraseChange={handlePhraseChange} />
                     </div>
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">

@@ -16,6 +16,10 @@ export function get(id){
     return storage.read(id);
 }
 
+export function select(query){
+    return storage.select(query);
+}
+
 export function add(data){
     if(Array.isArray(data)){
         console.log("array")
