@@ -8,6 +8,7 @@ import DataUploadControls from '../components/data_upload_controls';
 import { useState } from 'react';
 
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
+import { ToastManager } from '../util/ToastManager';
 
 export default function Upload( ) {
     
@@ -16,28 +17,14 @@ export default function Upload( ) {
    
     const [toasts, setToasts] = useState([]);
 
-    /*
-        utility functions
-    */
-
-    function showToast(title, body, status){
-        const toast = {
-            title: title,
-            body: body,
-            status: status,
-            time: Date.now()
-        }
-        setToasts(old => [...old, toast])
-    }
+    const toastManager = new ToastManager(setToasts);
 
     /*
         event handlers
     */
 
     function handleCloseToastClick(event, id){
-        if(id >= event.length && id < 0) return;
-
-        setToasts(old => [...(old.slice(0, id)), ...(old.slice(id + 1, old.length))]);
+        toastManager.closeToast(id);
     }
 
     function handleRemoveRecordClick(event, index){
@@ -47,18 +34,18 @@ export default function Upload( ) {
     async function handleSendAllClick(event){
 
         if(data.length == 0){
-            showToast('No data to send', `There is no any data to send`, 'warning');
+            toastManager.showToast('No data to send', `There is no any data to send`, 'warning');
             return;
         }
 
         const response = await InputDataAPI.sendRecords(data);
 
         if(response.ok){
-            showToast('Data sent', `Successfully sent ${data.length} data records`, 'success');
+            toastManager.showToast('Data sent', `Successfully sent ${data.length} data records`, 'success');
             setData([]);   //TODO: remove only sent data (user can create a new record while request is being processed)
         }
         else{
-            showToast('Sending failed', `Can't send the data`, 'danger');
+            toastManager.showToast('Sending failed', `Can't send the data`, 'danger');
         }
     }
 

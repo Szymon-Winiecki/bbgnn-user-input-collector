@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { downloadObjectAsJson } from '../util/frontendFileDownload';
 import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepresentation';
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
+import { ToastManager } from '../util/ToastManager';
 
 export default function Browse( ) {
     
@@ -24,29 +25,21 @@ export default function Browse( ) {
         phrase: ''
     });
 
+    const toastManager = new ToastManager(setToasts);
+
     /*
         utility functions
     */
-
-    function showToast(title, body, status){
-        const toast = {
-            title: title,
-            body: body,
-            status: status,
-            time: Date.now()
-        }
-        setToasts(old => [...old, toast])
-    }
 
     async function removeRecord(index){
         const id = data[index].id;
         const response = await InputDataAPI.removeRecord(id);
         if(response.ok){
-            showToast("Record removed", "Record successfully removed", "success");
+            toastManager.showToast("Record removed", "Record successfully removed", "success");
             setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))]);
         }
         else{
-            showToast("Can't remove record", "Try again later", "danger");
+            toastManager.showToast("Can't remove record", "Try again later", "danger");
         }
     }
 
@@ -56,9 +49,7 @@ export default function Browse( ) {
     */
 
     function handleCloseToastClick(event, id){
-        if(id >= event.length && id < 0) return;
-
-        setToasts(old => [...(old.slice(0, id)), ...(old.slice(id + 1, old.length))]);
+        toastManager.closeToast(id);
     }
 
     async function handleApplyFilters(event){
@@ -68,7 +59,7 @@ export default function Browse( ) {
             setData(response.body.records);
         }
         else{
-            showToast("Can't fetch data", "Try again later", "danger");
+            toastManager.showToast("Can't fetch data", "Try again later", "danger");
         }
     }
 

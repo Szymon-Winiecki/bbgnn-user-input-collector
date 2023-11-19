@@ -11,6 +11,7 @@ import { useRef, useState } from 'react';
 import KeyboardInputData from '../util/KeyboardInputData';
 import staticDataLoader from '../util/staticDataLoader';
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
+import { ToastManager } from '../util/ToastManager';
 
 export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     
@@ -26,6 +27,8 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     const [activeRecord, setActiveRecord] = useState(null);
 
     const [toasts, setToasts] = useState([]);
+
+    const toastManager = new ToastManager(setToasts);
 
     /*
         utility functions
@@ -50,16 +53,6 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     function saveRecordedData(){
         if(!currentInputData.current) return;
         setInputDataList(old => [...old, currentInputData.current.GetAsSerializableObject()]);
-    }
-
-    function showToast(title, body, status){
-        const toast = {
-            title: title,
-            body: body,
-            status: status,
-            time: Date.now()
-        }
-        setToasts(old => [...old, toast])
     }
 
     /*
@@ -118,26 +111,24 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     }
 
     function handleCloseToastClick(event, id){
-        if(id >= event.length && id < 0) return;
-
-        setToasts(old => [...(old.slice(0, id)), ...(old.slice(id + 1, old.length))]);
+        toastManager.closeToast(id);
     }
 
     async function handleSendAllClick(event){
 
         if(inputDataList.length == 0){
-            showToast('No data to send', `There is no any data to send`, 'warning');
+            toastManager.showToast('No data to send', `There is no any data to send`, 'warning');
             return;
         }
 
         const response = await InputDataAPI.sendRecords(inputDataList)
 
         if(response.ok){
-            showToast('Data sent', `Successfully sent ${inputDataList.length} data records`, 'success');
+            toastManager.showToast('Data sent', `Successfully sent ${inputDataList.length} data records`, 'success');
             setInputDataList([]);   //TODO: remove only sent data (user can create a new record while request is being processed)
         }
         else{
-            showToast('Sending failed', `Can't send the data`, 'danger');
+            toastManager.showToast('Sending failed', `Can't send the data`, 'danger');
         }
     }
 
