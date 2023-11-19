@@ -9,8 +9,8 @@ const schema = Joi.object({
     phrase: Joi.string()
         .required(),
 
-    finishDate: Joi.number(),
-        //.required(), //disabled for backwards compatibility
+    finishDate: Joi.number()
+        .required(),
 
     sequence: Joi.array()
         .items(Joi.object({
@@ -37,6 +37,9 @@ export function deserializeInputData(serialzied){
         if(Array.isArray(obj)){
             deserialzitionInfo.found_obj_count = obj.length;
             obj.forEach(o => {
+
+                if(!o.finishDate) o.finishDate = 0; //for backwards compatibility
+
                 if(isValid(o)){
                     deserialzitionInfo.correct_obj_count++;
                     deserialzitionInfo.correct_obj.push(o);
@@ -47,6 +50,9 @@ export function deserializeInputData(serialzied){
             });
         }
         else{
+
+            if(!obj.finishDate) obj.finishDate = 0; //for backwards compatibility
+
             deserialzitionInfo.found_obj_count = 1;
             if(isValid(obj)){
                 deserialzitionInfo.correct_obj_count = 1;
