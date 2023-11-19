@@ -5,16 +5,20 @@ import ToastSection from '../components/toast_section';
 import CollectedDataFilters from '../components/collected_data_filters';
 import CollectedDataDownloadControls from '../components/collected_data_download_controls';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { downloadObjectAsJson } from '../util/frontendFileDownload';
 import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepresentation';
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 import { ToastManager } from '../util/ToastManager';
+import Pagination from '../components/pagination';
 
 export default function Browse( ) {
     
     const [data, setData] = useState([]);
     const [activeRecord, setActiveRecord] = useState(null);
+    const [page, setPage] = useState(1);
+    const [recordsOnPage, setRecordsOnpage] = useState(10);
+    const [availableRecords, setAvailableRecords] = useState(0);
    
     const [toasts, setToasts] = useState([]);
 
@@ -22,7 +26,7 @@ export default function Browse( ) {
         sortField: '',
         sortAsc: true,
         users: [],
-        phrase: ''
+        phrase: '',
     });
 
     const toastManager = new ToastManager(setToasts);
@@ -43,6 +47,20 @@ export default function Browse( ) {
         }
     }
 
+    async function getRecords(){
+
+        const fullQuery = {...query, page: page, recordsOnPage: recordsOnPage }
+        const response = await InputDataAPI.selectRecords(fullQuery)
+
+        if(response.ok){
+            setAvailableRecords(response.body.allRecordsCount);
+            setData(response.body.records);
+        }
+        else{
+            toastManager.showToast("Can't fetch data", "Try again later", "danger");
+        }
+    }
+
 
     /*
         event handlers
@@ -53,14 +71,7 @@ export default function Browse( ) {
     }
 
     async function handleApplyFilters(event){
-        const response = await InputDataAPI.selectRecords(query)
-
-        if(response.ok){
-            setData(response.body.records);
-        }
-        else{
-            toastManager.showToast("Can't fetch data", "Try again later", "danger");
-        }
+        getRecords();
     }
 
     function handleRemoveRecordClick(event, index){
@@ -69,7 +80,18 @@ export default function Browse( ) {
     }
 
     // all == true - download all; all == false - download selected
-    function handleDownload(all, format){
+    async function handleDownload(all, format){
+
+        const fullQuery = {...query, page: 1, recordsOnPage: availableRecords }
+        const response = await InputDataAPI.selectRecords(fullQuery)
+
+        if(!response.ok){
+            toastManager.showToast("Download failed", "Try again later", "danger");
+            return;
+        }
+
+        const data = response.body.records;
+
         let dataToDownload;
         let filename;
         if(all){
@@ -127,6 +149,14 @@ export default function Browse( ) {
         })
     }
 
+    function handleChangePage(page){
+        setPage(page);
+    }
+
+    useEffect(() => {
+        getRecords();
+    }, [page]);
+
     return (
         <Layout page="browse">
             <div className='row col-12 ms-0'>
@@ -157,6 +187,12 @@ export default function Browse( ) {
                             collectedData={data} 
                             OnActiveRecordChanged={setActiveRecord}
                             OnRemoveRecordClick={handleRemoveRecordClick} />
+                        <div className={`col-11 d-flex justify-content-end ${Math.ceil(availableRecords / recordsOnPage) <= 1 && 'd-none'}`}>
+                            <Pagination 
+                                pagesCount={Math.ceil(availableRecords / recordsOnPage)}
+                                currentPage={page}
+                                OnChangePage={handleChangePage}/>
+                        </div>
                         <CollectedDataDownloadControls 
                             OnDownload={handleDownload}/>
                     </div>

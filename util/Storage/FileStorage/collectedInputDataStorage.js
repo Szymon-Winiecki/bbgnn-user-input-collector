@@ -66,9 +66,9 @@ export function select(query){
     }
 
     const page = query.page ?? 1;
-    const itemsOnPage = query.itemsOnPage ?? 10;
+    const itemsOnPage = query.recordsOnPage ?? 10;
 
-    const pagination = recordsOnPage(records.length, page, itemsOnPage);
+    const pagination = recordsOnPage(records.length, parseInt(page), parseInt(itemsOnPage));
 
     return {
         allRecordsCount: records.length,

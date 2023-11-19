@@ -1,0 +1,4 @@
+.current a{
+    background-color: var(--bs-light) !important;
+    font-weight: bold;
+}
