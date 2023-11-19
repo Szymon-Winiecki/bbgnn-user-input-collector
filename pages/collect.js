@@ -4,12 +4,13 @@ import PhraseForm from '../components/phrase_form';
 import CollectedDataList from '../components/collected_data_list';
 import DataPreviewSection from '../components/data_preview_section';
 import CollectedDataControls from '../components/collected_data_controls';
+import ToastSection from '../components/toast_section';
 
 import { useRef, useState } from 'react';
 
 import KeyboardInputData from '../util/KeyboardInputData';
 import staticDataLoader from '../util/staticDataLoader';
-import ToastSection from '../components/toast_section';
+import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 
 export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     
@@ -129,44 +130,15 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
             return;
         }
 
-        const status = await sendCollectedData(inputDataList);
+        const response = await InputDataAPI.sendRecords(inputDataList)
 
-        if(status == 201){
+        if(response.ok){
             showToast('Data sent', `Successfully sent ${inputDataList.length} data records`, 'success');
             setInputDataList([]);   //TODO: remove only sent data (user can create a new record while request is being processed)
         }
         else{
             showToast('Sending failed', `Can't send the data`, 'danger');
         }
-    }
-
-    /*
-        API calls
-    */
-
-    async function sendCollectedData(data = []) {
-        const url = "http://127.0.0.1:3000/api/collectedData";
-        
-        try{
-            const response = await fetch(url, {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify(data),
-            });
-            return response.status;
-        }
-        catch (e){
-            console.log(e);
-            return 500;
-        }
-        
     }
 
     return (

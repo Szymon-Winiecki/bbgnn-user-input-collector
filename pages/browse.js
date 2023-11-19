@@ -3,11 +3,12 @@ import DataPreviewSection from '../components/data_preview_section';
 import Layout from '../components/layout';
 import ToastSection from '../components/toast_section';
 import CollectedDataFilters from '../components/collected_data_filters';
+import CollectedDataDownloadControls from '../components/collected_data_download_controls';
 
 import { useState } from 'react';
-import CollectedDataDownloadControls from '../components/collected_data_download_controls';
 import { downloadObjectAsJson } from '../util/frontendFileDownload';
 import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepresentation';
+import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 
 export default function Browse( ) {
     
@@ -39,9 +40,13 @@ export default function Browse( ) {
 
     async function removeRecord(index){
         const id = data[index].id;
-        const status = await sendRemoveRecordRequest(id);
-        if(status == 204){
-            setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))])
+        const response = await InputDataAPI.removeRecord(id);
+        if(response.ok){
+            showToast("Record removed", "Record successfully removed", "success");
+            setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))]);
+        }
+        else{
+            showToast("Can't remove record", "Try again later", "danger");
         }
     }
 
@@ -57,8 +62,14 @@ export default function Browse( ) {
     }
 
     async function handleApplyFilters(event){
-        const fetched = await selectDataFromServer();
-        setData(fetched.pageRecords);
+        const response = await InputDataAPI.selectRecords(query)
+
+        if(response.ok){
+            setData(response.body.records);
+        }
+        else{
+            showToast("Can't fetch data", "Try again later", "danger");
+        }
     }
 
     function handleRemoveRecordClick(event, index){
@@ -123,114 +134,6 @@ export default function Browse( ) {
             newq.phrase = event.target.value;
             return newq;
         })
-    }
-
-    /*
-        API calls
-    */
-
-    async function getAllRecords() {
-        const url = "http://127.0.0.1:3000/api/collectedData";
-
-        try{
-            const response = await fetch(url, {
-                method: "GET",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-            });
-
-            if(response.ok){
-                return response.json();
-            }
-            else{
-                showToast("Can't fetch data", "Try again later", "danger")
-                return [];
-            }
-        }
-        catch (e){
-            console.log(e);
-            showToast("Can't fetch data", "Try again later", "danger");
-            return [];
-        }
-        
-    }
-
-    async function selectDataFromServer() {
-        
-        const searchParams = new URLSearchParams(query);
-
-
-        const url = "http://127.0.0.1:3000/api/collectedData?" + searchParams;
-
-        console.log(url);
-
-
-        try{
-            const response = await fetch(url, {
-                method: "GET",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-            });
-
-            if(response.ok){
-                return response.json();
-            }
-            else{
-                showToast("Can't fetch data", "Try again later", "danger")
-                return [];
-            }
-        }
-        catch (e){
-            console.log(e);
-            showToast("Can't fetch data", "Try again later", "danger");
-            return [];
-        }
-        
-    }
-
-    async function sendRemoveRecordRequest(id) {
-        const url = `http://127.0.0.1:3000/api/collectedData/${id}`;
-
-        try{
-            const response = await fetch(url, {
-                method: "DELETE",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-            });
-
-            if(response.ok){
-                showToast("Record removed", "Record successfully removed", "success")
-                return response.status;
-            }
-            else{
-                showToast("Can't remove record", "Try again later", "danger")
-                return response.status;
-            }
-        }
-        catch (e){
-            console.log(e);
-            showToast("Can't remove record", "Try again later", "danger");
-            return 500;
-        }
-        
     }
 
     return (

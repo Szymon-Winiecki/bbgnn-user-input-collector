@@ -2,14 +2,12 @@ import CollectedDataList from '../components/collected_data_list';
 import DataPreviewSection from '../components/data_preview_section';
 import Layout from '../components/layout';
 import ToastSection from '../components/toast_section';
-import CollectedDataFilters from '../components/collected_data_filters';
-
-import { useState } from 'react';
-import CollectedDataDownloadControls from '../components/collected_data_download_controls';
-import { downloadObjectAsJson } from '../util/frontendFileDownload';
-import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepresentation';
 import CollectedDataControls from '../components/collected_data_controls';
 import DataUploadControls from '../components/data_upload_controls';
+
+import { useState } from 'react';
+
+import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 
 export default function Upload( ) {
     
@@ -32,15 +30,6 @@ export default function Upload( ) {
         setToasts(old => [...old, toast])
     }
 
-    async function removeRecord(index){
-        const id = data[index].id;
-        const status = await sendRemoveRecordRequest(id);
-        if(status == 204){
-            setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))])
-        }
-    }
-
-
     /*
         event handlers
     */
@@ -52,8 +41,7 @@ export default function Upload( ) {
     }
 
     function handleRemoveRecordClick(event, index){
-
-        removeRecord(index);
+        setData(old => [...(old.slice(0, index)), ...(old.slice(index + 1, old.length))])
     }
 
     async function handleSendAllClick(event){
@@ -63,9 +51,9 @@ export default function Upload( ) {
             return;
         }
 
-        const status = await sendCollectedData(data);
+        const response = await InputDataAPI.sendRecords(data);
 
-        if(status == 201){
+        if(response.ok){
             showToast('Data sent', `Successfully sent ${data.length} data records`, 'success');
             setData([]);   //TODO: remove only sent data (user can create a new record while request is being processed)
         }
@@ -78,35 +66,6 @@ export default function Upload( ) {
         setData(old => [...old, ...data]);
     }
 
-
-    /*
-        API calls
-    */
-
-    async function sendCollectedData(data = []) {
-        const url = "http://127.0.0.1:3000/api/collectedData";
-        
-        try{
-            const response = await fetch(url, {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify(data),
-            });
-            return response.status;
-        }
-        catch (e){
-            console.log(e);
-            return 500;
-        }
-        
-    }
 
     return (
         <Layout page="upload">

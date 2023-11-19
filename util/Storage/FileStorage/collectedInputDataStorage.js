@@ -72,7 +72,7 @@ export function select(query){
 
     return {
         allRecordsCount: records.length,
-        pageRecords: records.slice(pagination.from, pagination.to)
+        records: records.slice(pagination.from, pagination.to)
     }
 }
 
