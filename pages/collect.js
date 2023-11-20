@@ -67,6 +67,7 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     }
 
     function cancel(){
+        if(!writing) return;
         stopRecording();
         resetInput();
     }

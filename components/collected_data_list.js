@@ -26,7 +26,7 @@ export default function CollectedDataList({ collectedData, OnActiveRecordChanged
                         username={data.user} 
                         title={data.phrase} 
                         time={data.finishDate} 
-                        key={data.finishDate + data.id ?? ''} 
+                        key={`${data.finishDate}_${data.id ?? ''}`} 
                         OnClick={handleRecordClick} 
                         OnRemoveClick={OnRemoveRecordClick} 
                         OnDownloadClick={handleDownloadFileClick} />;
