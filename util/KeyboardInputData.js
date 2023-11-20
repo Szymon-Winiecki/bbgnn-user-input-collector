@@ -85,7 +85,7 @@ export default class KeyboardInputData
     }
 
     #removeAccents(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace('ł', 'l').replace('Ł', 'L');
     }
 
     #normalize(key){
