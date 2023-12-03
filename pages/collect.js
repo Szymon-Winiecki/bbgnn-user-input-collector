@@ -161,10 +161,15 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
-                        <CollectedDataList 
-                            collectedData={inputDataList} 
-                            OnActiveRecordChanged={setActiveRecord}
-                            OnRemoveRecordClick={handleRecordRemoveClick} />
+                        <div>
+                            <div className='col-11 d-flex justify-content-end mb-3'>
+                                collected records: <span className='mx-1 fw-bold'>{inputDataList.length}</span>
+                            </div>
+                            <CollectedDataList 
+                                collectedData={inputDataList} 
+                                OnActiveRecordChanged={setActiveRecord}
+                                OnRemoveRecordClick={handleRecordRemoveClick} />
+                        </div>
                         <CollectedDataControls 
                             OnSendAllClick={handleSendAllClick} />
                     </div>
