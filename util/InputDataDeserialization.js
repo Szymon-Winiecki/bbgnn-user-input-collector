@@ -16,7 +16,8 @@ const schema = Joi.object({
         .items(Joi.object({
             key: Joi.string().required(),
             keyDownTime: Joi.number().required(),
-            keyUpTime: Joi.number()
+            keyUpTime: Joi.number(),
+            cursorPosition: Joi.number()
         }))
         .required(),
 
