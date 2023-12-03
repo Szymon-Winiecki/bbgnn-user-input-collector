@@ -1,6 +1,6 @@
 import style from './collected_data_record.module.css'
 
-import { limitStringLength, timestampToString } from "../util/formatingUtils";
+import { limitStringLength, timestampToDateTimeString } from "../util/formatingUtils";
 
 export default function CollectedDataRecord({ index, username, title, time, OnClick, OnRemoveClick, OnDownloadClick }) {
   return (
@@ -10,7 +10,7 @@ export default function CollectedDataRecord({ index, username, title, time, OnCl
         </div>
         <span className="col-3 fw-bold cursor-default">{limitStringLength(username, 12)}</span>
         <span className="col-3 cursor-default">{limitStringLength(title, 12)}</span>
-        <span className="col-3 text-secondary cursor-default">{timestampToString(time)}</span>
+        <span className="col-3 text-secondary cursor-default">{timestampToDateTimeString(time)}</span>
         <div className="col-1 d-flex justify-content-end">
             <button className="btn btn-success btn-sm" onClick={(e) => {OnDownloadClick(e, index); e.stopPropagation();} }><i className="bi bi-file-earmark-arrow-down"></i></button>
         </div>

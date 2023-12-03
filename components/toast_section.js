@@ -1,4 +1,4 @@
-import { timestampToString } from "../util/formatingUtils";
+import { timestampToTimeString } from "../util/formatingUtils";
 import Toast from "./toast";
 
 export default function ToastSection({ toasts, maxToasts = 5, OnCloseClick }) {
@@ -15,7 +15,7 @@ export default function ToastSection({ toasts, maxToasts = 5, OnCloseClick }) {
   return (
     <div className="toast-container position-fixed bottom-0 end-0 p-3 pb-5">
       {limitToasts(toasts).map( (toast, id) => {
-        return <Toast title={toast.title} body={toast.body} status={toast.status} when={timestampToString(toast.time)} key={toast.time} OnCloseClick={(event) => OnCloseClick(event, id)} />
+        return <Toast title={toast.title} body={toast.body} status={toast.status} when={timestampToTimeString(toast.time)} key={toast.time} OnCloseClick={(event) => OnCloseClick(event, id)} />
       })}
     </div>
   );

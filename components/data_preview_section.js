@@ -5,6 +5,7 @@ import InputDataRaw from "./input_data_raw";
 import { downloadObjectAsJson } from "../util/frontendFileDownload";
 import InputDataGraph from "./input_data_graph";
 import { eventSequenceToMeanGraph, toTorchData } from "../util/dataRepresentation";
+import { timestampToDateTimeString } from "../util/formatingUtils";
 
 export default function DataPreviewSection({ inputData }) {
     const tabs = [
@@ -49,6 +50,9 @@ export default function DataPreviewSection({ inputData }) {
                 <div className="col-6 p-4">
                     <div>
                         <span className="fw-bold">user:</span> <span>{inputData.user}</span>
+                    </div>
+                    <div>
+                        <span className="fw-bold">date:</span> <span>{timestampToDateTimeString(inputData.finishDate)}</span>
                     </div>
                     <div>
                         <span className="fw-bold">phrase to retype:</span> <span>{inputData.phrase}</span>

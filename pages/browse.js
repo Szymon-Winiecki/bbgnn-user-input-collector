@@ -153,9 +153,13 @@ export default function Browse( ) {
         setPage(page);
     }
 
+    function handleChangeRecordsOnpage(event){
+        setRecordsOnpage(event.target.value);
+    }
+
     useEffect(() => {
         getRecords();
-    }, [page]);
+    }, [page, recordsOnPage]);
 
     return (
         <Layout page="browse">
@@ -168,10 +172,12 @@ export default function Browse( ) {
                 <div className="col-12 col-xl-6">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataFilters 
+                            recordsOnPage={recordsOnPage}
                             allUsers={["Szymon", "Test"]}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
                             OnApplyClick={handleApplyFilters} 
                             sortField={query.sortField}
+                            OnRecordsOnPageChange={handleChangeRecordsOnpage}
                             OnSortFieldChange={handleSortFieldChange}
                             sortOrder={query.sortAsc ? 'asc' : 'desc'}
                             OnSortOrderChange={handleSortOrderChange}
@@ -183,6 +189,9 @@ export default function Browse( ) {
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
+                        <div className='col-11 d-flex justify-content-end mb-3'>
+                            showing records <span className='mx-1 fw-bold'> {(page - 1) * recordsOnPage + 1} - {Math.min(page * recordsOnPage, availableRecords)}</span> of <span className='mx-1 fw-bold'>{availableRecords}</span>
+                        </div>
                         <CollectedDataList 
                             collectedData={data} 
                             OnActiveRecordChanged={setActiveRecord}
