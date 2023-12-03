@@ -35,3 +35,12 @@ export function update(data){
 export function remove(id){
     return storage.remove(id);
 }
+
+export function getAllUsers(){
+    const allRecords = getAll();
+    const users = new Set();
+    allRecords.forEach(record => {
+        users.add(record.user);
+    });
+    return [...users];
+}

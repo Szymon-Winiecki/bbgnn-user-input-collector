@@ -144,3 +144,44 @@ export async function sendRecords(data) {
     }
     
 }
+
+
+export async function getAllUsernames() {
+    const url = baseURL + "usernames";
+
+    try{
+        const response = await fetch(url, {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+        });
+
+        if(response.ok){
+            return {
+                ok: true,
+                status: response.status,
+                body: await response.json()
+            };
+        }
+        else{
+            return {
+                ok: false,
+                status: response.status,
+            };
+        }
+    }
+    catch (e){
+        console.log(e);
+        return {
+            ok: false,
+            status: 500
+        };
+    }
+    
+}

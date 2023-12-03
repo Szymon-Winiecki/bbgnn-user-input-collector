@@ -19,6 +19,8 @@ export default function Browse( ) {
     const [page, setPage] = useState(1);
     const [recordsOnPage, setRecordsOnpage] = useState(10);
     const [availableRecords, setAvailableRecords] = useState(0);
+
+    const [usernames, setUsernames] = useState([])
    
     const [toasts, setToasts] = useState([]);
 
@@ -49,8 +51,8 @@ export default function Browse( ) {
 
     async function getRecords(){
 
-        const fullQuery = {...query, page: page, recordsOnPage: recordsOnPage }
-        const response = await InputDataAPI.selectRecords(fullQuery)
+        const fullQuery = {...query, page: page, recordsOnPage: recordsOnPage };
+        const response = await InputDataAPI.selectRecords(fullQuery);
 
         if(response.ok){
             setAvailableRecords(response.body.allRecordsCount);
@@ -58,6 +60,17 @@ export default function Browse( ) {
         }
         else{
             toastManager.showToast("Can't fetch data", "Try again later", "danger");
+        }
+    }
+
+    async function getUsernames(){
+        const response = await InputDataAPI.getAllUsernames();
+
+        if(response.ok){
+            setUsernames(response.body);
+        }
+        else{
+            toastManager.showToast("Failed to fetch usernames", "Try again later", "danger");
         }
     }
 
@@ -158,6 +171,10 @@ export default function Browse( ) {
     }
 
     useEffect(() => {
+        getUsernames();
+    }, [])
+
+    useEffect(() => {
         getRecords();
     }, [page, recordsOnPage]);
 
@@ -173,7 +190,7 @@ export default function Browse( ) {
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataFilters 
                             recordsOnPage={recordsOnPage}
-                            allUsers={["Szymon", "Test"]}
+                            allUsers={usernames}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
                             OnApplyClick={handleApplyFilters} 
                             sortField={query.sortField}
