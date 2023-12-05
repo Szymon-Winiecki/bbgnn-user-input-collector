@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { recordsOnPage } from '../../utilityHelper';
+
 const STORAGE_ROOT_DIRECTORY = 'Storage/CollectedInputData/';
 const STORAGE_FILE_NAME = 'Data.json';
 const STORAGE_EMPTY_DATA = []
@@ -157,14 +159,5 @@ function getByFieldNumericSorter(field, asc){
 function getByFieldTextSorter(field, asc){
     return (a, b) => {
         return a[field].localeCompare(b[field]) * (asc ? 1 : -1);
-    }
-}
-
-function recordsOnPage(all, page, itemsOnPage){
-    const from = (page - 1) * itemsOnPage;
-    const to = from + itemsOnPage;
-    return {
-        from: Math.min(from, all),
-        to: Math.min(to, all)
     }
 }

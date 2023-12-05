@@ -12,6 +12,7 @@ import KeyboardInputData from '../util/KeyboardInputData';
 import staticDataLoader from '../util/staticDataLoader';
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 import { ToastManager } from '../util/ToastManager';
+import PaginatedCollectedDataList from '../components/paginated_collected_data_list';
 
 export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
     
@@ -165,8 +166,8 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
                             <div className='col-11 d-flex justify-content-end mb-3'>
                                 collected records: <span className='mx-1 fw-bold'>{inputDataList.length}</span>
                             </div>
-                            <CollectedDataList 
-                                collectedData={inputDataList} 
+                            <PaginatedCollectedDataList
+                                data={inputDataList} 
                                 OnActiveRecordChanged={setActiveRecord}
                                 OnRemoveRecordClick={handleRecordRemoveClick} />
                         </div>

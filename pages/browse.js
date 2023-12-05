@@ -11,13 +11,14 @@ import { collectedDataToSSR, collectedDataToTorchData } from '../util/dataRepres
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 import { ToastManager } from '../util/ToastManager';
 import Pagination from '../components/pagination';
+import PaginatedCollectedDataList from '../components/paginated_collected_data_list';
 
 export default function Browse( ) {
     
     const [data, setData] = useState([]);
     const [activeRecord, setActiveRecord] = useState(null);
     const [page, setPage] = useState(1);
-    const [recordsOnPage, setRecordsOnpage] = useState(10);
+    const [recordsOnPage, setRecordsOnPage] = useState(10);
     const [availableRecords, setAvailableRecords] = useState(0);
 
     const [usernames, setUsernames] = useState([])
@@ -166,8 +167,8 @@ export default function Browse( ) {
         setPage(page);
     }
 
-    function handleChangeRecordsOnpage(event){
-        setRecordsOnpage(event.target.value);
+    function handleChangeRecordsOnPage(event){
+        setRecordsOnPage(event.target.value);
     }
 
     useEffect(() => {
@@ -189,12 +190,10 @@ export default function Browse( ) {
                 <div className="col-12 col-xl-6">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
                         <CollectedDataFilters 
-                            recordsOnPage={recordsOnPage}
                             allUsers={usernames}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
                             OnApplyClick={handleApplyFilters} 
                             sortField={query.sortField}
-                            OnRecordsOnPageChange={handleChangeRecordsOnpage}
                             OnSortFieldChange={handleSortFieldChange}
                             sortOrder={query.sortAsc ? 'asc' : 'desc'}
                             OnSortOrderChange={handleSortOrderChange}
@@ -205,20 +204,18 @@ export default function Browse( ) {
                     </div>
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
+                    
+
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
-                        <div className='col-11 d-flex justify-content-end mb-3'>
-                            showing records <span className='mx-1 fw-bold'> {(page - 1) * recordsOnPage + 1} - {Math.min(page * recordsOnPage, availableRecords)}</span> of <span className='mx-1 fw-bold'>{availableRecords}</span>
-                        </div>
-                        <CollectedDataList 
-                            collectedData={data} 
+                        <PaginatedCollectedDataList
+                            data={data} 
+                            force_page={page}
+                            force_availableRecordsCount={availableRecords}
+                            force_recordsOnPage={recordsOnPage}
                             OnActiveRecordChanged={setActiveRecord}
-                            OnRemoveRecordClick={handleRemoveRecordClick} />
-                        <div className={`col-11 d-flex justify-content-end ${Math.ceil(availableRecords / recordsOnPage) <= 1 && 'd-none'}`}>
-                            <Pagination 
-                                pagesCount={Math.ceil(availableRecords / recordsOnPage)}
-                                currentPage={page}
-                                OnChangePage={handleChangePage}/>
-                        </div>
+                            OnRemoveRecordClick={handleRemoveRecordClick}
+                            OnPageChange={handleChangePage}
+                            OnRecordsOnPageChange={handleChangeRecordsOnPage} />
                         <CollectedDataDownloadControls 
                             OnDownload={handleDownload}/>
                     </div>

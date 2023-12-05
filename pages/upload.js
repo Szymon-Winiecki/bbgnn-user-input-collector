@@ -9,6 +9,7 @@ import { useState } from 'react';
 
 import * as InputDataAPI from '../util/ClientSideFetches/inputDataAPI'
 import { ToastManager } from '../util/ToastManager';
+import PaginatedCollectedDataList from '../components/paginated_collected_data_list';
 
 export default function Upload( ) {
     
@@ -70,8 +71,8 @@ export default function Upload( ) {
                 </div>
                 <div className="col-12 col-xl-6 mt-4 mt-xl-0">
                     <div className="col-12 border p-4 h-100 d-flex flex-column justify-content-between">
-                        <CollectedDataList 
-                            collectedData={data} 
+                        <PaginatedCollectedDataList 
+                            data={data}
                             OnActiveRecordChanged={setActiveRecord}
                             OnRemoveRecordClick={handleRemoveRecordClick} />
                         <CollectedDataControls 

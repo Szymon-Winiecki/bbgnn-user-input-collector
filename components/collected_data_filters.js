@@ -4,11 +4,6 @@ export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases,
     return (
         <div className="col-10 offset-1 row g-2">
 
-            <div className="input-group mb-3">
-                <label className="input-group-text">records on page</label>
-                <input type="number" className="form-control" min={0} value={recordsOnPage} onChange={OnRecordsOnPageChange} />
-            </div>
-
             <div className="fs-3">Sort</div>
 
             <div className="input-group mb-3">
