@@ -6,6 +6,8 @@ import { downloadObjectAsJson } from "../util/frontendFileDownload";
 import InputDataGraph from "./input_data_graph";
 import { eventSequenceToMeanGraph, toTorchData } from "../util/dataRepresentation";
 import { timestampToDateTimeString } from "../util/formatingUtils";
+import { retrieveEnteredPhrase } from "../util/Analysis/sequenceAnalysis";
+import { getErrorsCount } from "../util/Analysis/phraseAnalysis";
 
 export default function DataPreviewSection({ inputData }) {
     const tabs = [
@@ -56,6 +58,13 @@ export default function DataPreviewSection({ inputData }) {
                     </div>
                     <div>
                         <span className="fw-bold">phrase to retype:</span> <span>{inputData.phrase}</span>
+                    </div>
+                    <hl></hl>
+                    <div>
+                        <span className="fw-bold">retyped phrase:</span> <span>{retrieveEnteredPhrase(inputData.sequence)}</span>
+                    </div>
+                    <div>
+                        <span className="fw-bold">typos:</span> <span>{getErrorsCount(inputData.phrase, retrieveEnteredPhrase(inputData.sequence))}</span>
                     </div>
                 </div>
 
