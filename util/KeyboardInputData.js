@@ -16,7 +16,7 @@ export default class KeyboardInputData
         this.#startTime = startTime;
     }
 
-    RegisterKeyDown(key, time, cursorPosition){
+    RegisterKeyDown(key, time, cursorPosition, selectionEnd){
         if(!this.#startTime){
             this.RegisterStartTime(time);
         }
@@ -33,7 +33,8 @@ export default class KeyboardInputData
             key: key,
             keyDownTime: time,
             keyUpTime: undefined,
-            cursorPosition: cursorPosition
+            cursorPosition: cursorPosition,
+            selectionEnd: selectionEnd
         })
     }
 

@@ -77,7 +77,7 @@ export default function Collect( {predefinedUsernames, predefinedPhrases} ) {
         if(!writing){
             startRecording(username, phrase);
         }
-        currentInputData.current.RegisterKeyDown(event.key, event.timeStamp, event.target.selectionStart);
+        currentInputData.current.RegisterKeyDown(event.key, event.timeStamp, event.target.selectionStart, event.target.selectionEnd);
     }
 
     function registerKeyUp(event){
