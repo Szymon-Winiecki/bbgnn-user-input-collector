@@ -1,7 +1,7 @@
-const baseURL = "http://127.0.0.1:3000/api/"
+import { getApiBaseUrl } from "./serverAddress";
 
 export async function getAllRecords() {
-    const url = baseURL + "collectedData";
+    const url = getApiBaseUrl() + "collectedData";
 
     try{
         const response = await fetch(url, {
@@ -44,7 +44,7 @@ export async function selectRecords(query) {
     
     const searchParams = new URLSearchParams(query);
 
-    const url = baseURL + "collectedData?" + searchParams;
+    const url = getApiBaseUrl() + "collectedData?" + searchParams;
 
     try{
         const response = await fetch(url, {
@@ -84,7 +84,7 @@ export async function selectRecords(query) {
 }
 
 export async function removeRecord(id) {
-    const url = baseURL + "collectedData/" + id;
+    const url = getApiBaseUrl() + "collectedData/" + id;
 
     try{
         const response = await fetch(url, {
@@ -115,7 +115,7 @@ export async function removeRecord(id) {
 }
 
 export async function sendRecords(data) {
-    const url = baseURL + "collectedData";
+    const url = getApiBaseUrl() + "collectedData";
     
     try{
         const response = await fetch(url, {
@@ -147,7 +147,7 @@ export async function sendRecords(data) {
 
 
 export async function getAllUsernames() {
-    const url = baseURL + "usernames";
+    const url = getApiBaseUrl() + "usernames";
 
     try{
         const response = await fetch(url, {
