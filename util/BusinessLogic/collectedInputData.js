@@ -1,23 +1,23 @@
-import * as storage from '../Storage/FileStorage/collectedInputDataStorage.js';
+import * as storage from '../Storage/SQLite/collectedInputDataStorage.js';
 
 export function initStorage(){
     storage.initStorage();
 }
 
 export function resetStorage(){
-    storage.resetStorage();
+    storage.resetStorage(); 
 }
 
-export function getAll(){
-    return storage.readAll();
+export async function getAll(){
+    return await storage.readAll();
 }
 
-export function get(id){
-    return storage.read(id);
+export async function get(id){
+    return await storage.read(id);
 }
 
-export function select(query){
-    return storage.select(query);
+export async function select(query){
+    return await storage.select(query);
 }
 
 export function add(data){
@@ -28,19 +28,15 @@ export function add(data){
     return storage.save(data);
 }
 
-export function update(data){
-    return storage.update(data);
+export async function update(data){
+    return await storage.update(data);
 }
 
 export function remove(id){
     return storage.remove(id);
 }
 
-export function getAllUsers(){
-    const allRecords = getAll();
-    const users = new Set();
-    allRecords.forEach(record => {
-        users.add(record.user);
-    });
-    return [...users];
+export async function getAllUsers(){
+    const usernames = await storage.getAllUsernames();
+    return usernames
 }
