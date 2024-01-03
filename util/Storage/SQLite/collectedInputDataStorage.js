@@ -1,45 +1,7 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
 import { recordsOnPage } from '../../utilityHelper';
 import { AppDatabase } from './AppDatabase';
+import { storageFilePath } from './common';
 
-const STORAGE_ROOT_DIRECTORY = 'Storage/SQLite/CollectedInputData/';
-const STORAGE_FILE_NAME = 'Data.db';
-
-const storageFilePath = path.join(STORAGE_ROOT_DIRECTORY, STORAGE_FILE_NAME);
-
-export async function initStorage(){
-    fs.mkdirSync(STORAGE_ROOT_DIRECTORY, {recursive: true});
-    
-    if(!fs.existsSync(storageFilePath)){
-        const db = new AppDatabase(storageFilePath);
-
-        await db.createUserTable();
-        await db.createPhraseTable();
-        await db.createSequenceTable();
-        await db.createDataInfoTable();
-    }
-    else{
-        console.error("Init failed, database exists.");
-    }
-}
-
-export async function resetStorage(){
-    if(fs.existsSync(storageFilePath)){
-        const db = new AppDatabase(storageFilePath);
-
-        await db.dropDataInfoTable();
-        await db.dropUserTable();
-        await db.dropPhraseTable();
-        await db.dropSequenceTable();
-
-        await db.createUserTable();
-        await db.createPhraseTable();
-        await db.createSequenceTable();
-        await db.createDataInfoTable();
-    }
-}
 
 export async function readAll(){
     const db = new AppDatabase(storageFilePath);
@@ -58,6 +20,7 @@ export async function read(id){
     if(!row){
         return false;
     }
+    row.sequence = JSON.parse(row.sequence);
     return row;
 }
 
@@ -110,18 +73,18 @@ export async function save(data){
     let sequence_id = await db.insertSequence(JSON.stringify(data.sequence));
     sequence_id = sequence_id.id;
 
-    await db.insertDataInfo(user_id, phrase_id, sequence_id, data.finishDate);
+    const dataInfo = await db.insertDataInfo(user_id, phrase_id, sequence_id, data.finishDate);
 
-    return true;
+    return dataInfo?.id;
 }
 
 export function saveMany(data){
-
+    const ids = [];
     data.forEach(d => {
-       save(d);
+       ids.push(save(d));
     });
 
-    return true;
+    return ids;
 }
 
 
