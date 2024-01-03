@@ -1,13 +1,5 @@
 import * as storage from '../Storage/SQLite/collectedInputDataStorage.js';
 
-export function initStorage(){
-    storage.initStorage();
-}
-
-export function resetStorage(){
-    storage.resetStorage(); 
-}
-
 export async function getAll(){
     return await storage.readAll();
 }
