@@ -44,3 +44,7 @@ export function phraseRetrivingCompatibility(sequence){
     }
     else return 0;
 }
+
+export function getTypingTime(sequence){
+    return sequence[sequence.length - 1].keyUpTime;
+}
