@@ -282,12 +282,23 @@ export class AppDatabase{
         return this.#db.get(`INSERT INTO ${data_competition_table.table_name}(${data_competition_table.data_info_id_column}, ${data_competition_table.competition_id_column}) VALUES(?, ?) RETURNING *;`, [data_info_id, competition_id]);
     }
 
-    async getDataForCompetition(competition_id){
+    async getDataInfoForCompetition(competition_id){
         return this.#db.all(`SELECT * FROM ${data_competition_table.table_name} dc 
                             JOIN ${data_info_table.table_name} di 
                             ON dc.${data_competition_table.data_info_id_column} = di.${data_info_table.id_column} 
                             WHERE ${data_competition_table.competition_id_column} = ?;`
             , [competition_id]);
+    }
+
+    async getDataForCompetition(competition_id){
+        const fieldsToSelect = `di.${data_info_table.id_column}, di.${data_info_table.finish_date_column} as finishDate, u.${user_table.username_column} as user, p.${phrase_table.phrase_column}, s.${sequence_table.sequence_column}`;
+        return this.#db.all(`SELECT ${fieldsToSelect} FROM ${data_info_table.table_name} di 
+                        JOIN ${user_table.table_name} u ON di.${data_info_table.user_id_column} = u.${user_table.id_column}
+                        JOIN ${phrase_table.table_name} p ON di.${data_info_table.phrase_id_column} = p.${phrase_table.id_column}
+                        JOIN ${sequence_table.table_name} s ON di.${data_info_table.sequence_id_column} = s.${sequence_table.id_column}
+                        JOIN ${data_competition_table.table_name} dc ON di.${data_info_table.id_column} = dc.${data_competition_table.data_info_id_column}
+                        WHERE dc.${data_competition_table.competition_id_column} = ? ORDER BY di.${data_info_table.finish_date_column} ASC;
+            `, [competition_id]);
     }
 
     async getDataForUser(username){

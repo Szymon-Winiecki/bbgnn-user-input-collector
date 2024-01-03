@@ -29,9 +29,21 @@ export async function getAllCompetitions(){
 export async function getDataInfoForCompetition(id){
     const db = new AppDatabase(storageFilePath);
 
-    const competitions = await db.getDataForCompetition(id);
+    const competitions = await db.getDataInfoForCompetition(id);
 
     return competitions;
+}
+
+export async function getDataForCompetition(id){
+    const db = new AppDatabase(storageFilePath);
+
+    const data = await db.getDataForCompetition(id);
+
+    data.forEach(row => {
+        row.sequence = JSON.parse(row.sequence);
+    });
+
+    return data;
 }
 
 export async function createCompetition(code, teacher, phrase, repetitions, created_at, start_at, end_at){

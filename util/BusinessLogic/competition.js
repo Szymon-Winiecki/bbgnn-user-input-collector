@@ -50,7 +50,6 @@ export async function getStats(data_id){
 
 export async function getResultsForUser(username){
     const data = await storage.getDataForUser(username);
-    console.log(data);
     const results = [];
     data.forEach(d => {
         const time = getTypingTime(d.sequence);
@@ -64,6 +63,43 @@ export async function getResultsForUser(username){
     });
 
     return results;
+}
+
+export async function getResultsForCompetitions(competition_id){
+    const data = await storage.getDataForCompetition(competition_id);
+    const results = [];
+    data.forEach(d => {
+        const time = getTypingTime(d.sequence);
+        const typos = getErrorsCount(d.phrase, retrieveEnteredPhrase(d.sequence));
+        const score = time / 1000 + typos * 0.5;
+        const username_parts = d.user.split('_');
+        results.push({
+            username: d.user,
+            studentNumber: username_parts[2],
+            classNumber: username_parts[1],
+            time: time,
+            typos: typos,
+            score: score,
+        })
+    });
+
+    const topResults = new Map();
+
+    results.forEach(r => {
+        if(!topResults.has(r.username)){
+            topResults.set(r.username, {
+                count: 0,
+                result: r,
+            })
+        }
+
+        const t = topResults.get(r.username);
+        t.count++;
+        if(t.result.score > r.score){
+            t.result = r;
+        }
+    });
+    return Array.from(topResults.values());
 }
 
 const CODE_LENGTH = 8;
