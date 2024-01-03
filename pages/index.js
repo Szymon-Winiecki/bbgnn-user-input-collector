@@ -13,6 +13,9 @@ export default function Home() {
       <div>
         <Link href="/upload">upload data</Link>
       </div>
+      <div>
+        <Link href="/competition_index">competition</Link>
+      </div>
     </Layout>
   );
 }
