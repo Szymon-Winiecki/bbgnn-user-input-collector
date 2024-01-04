@@ -23,3 +23,10 @@ main{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+.no-select{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

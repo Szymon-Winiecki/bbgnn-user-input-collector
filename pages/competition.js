@@ -98,7 +98,8 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
     }
 
     function handleInputChange(event){
-        setInput(event.target.value);
+        if(event.target.value.length > input.length)
+        setInput(old => (event.target.value.length - old.length > 2) ? old : event.target.value);
     }
 
 
@@ -126,7 +127,7 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
                     <form className='col-12'>
                         <div className="mb-3">
                             <div className="">tekst do przepisania:</div>
-                            <div className='fw-bold'>{phrase}</div>
+                            <div className='fw-bold no-select'>{phrase}</div>
                         </div>
                         <div className="mb-3">
                             <div className="">tu przepisz zdanie:</div>
