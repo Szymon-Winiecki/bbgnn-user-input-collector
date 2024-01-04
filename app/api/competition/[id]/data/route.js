@@ -28,6 +28,9 @@ export async function POST(request, { params }) {
     try {
         const body = await request.json();
         const result = await bl.saveDataInCompetition(body, id);
+        if(result == null){
+            return Response.json(result, { status: 400 });
+        }
         return Response.json(result, { status: 201 });
     } catch (err) {
         console.error(err);

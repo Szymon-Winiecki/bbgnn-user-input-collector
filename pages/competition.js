@@ -7,7 +7,7 @@ import { getResultsForUser, getStats, saveDataForCompetition } from '../util/Cli
 import * as bl from '../util/BusinessLogic/competition';
 import { useRouter } from 'next/router';
 
-export default function CompetitionIndex( {competitionCode, competition_id, studentNumber, classNumber, phrase, repetitions} ) {
+export default function CompetitionIndex( {competitionCode, competition_id, studentNumber, classNumber, phrase, repetitions, isActive} ) {
 
     const router = useRouter();
 
@@ -106,6 +106,29 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
     useEffect(() => {
         getPreviousResults();
     }, [])
+
+    if(!isActive){
+        return (
+            <HiddenLayout title="konkurs">
+                <div className='col'>
+                    <div>
+                        <h1>Konkurs Szybkiego Pisania</h1>
+                    </div>
+                    <div className="border-start border-primary-subtle border-3 ps-2">
+                        <div className='row'> <div className='col-3'>numer z dziennika:</div> <div className='fw-bold col-9'>{studentNumber}</div></div>
+                        <div className='row'> <div className='col-3'>klasa:</div> <div className='fw-bold col-9'>{classNumber}</div></div>
+                    </div>
+                    <div className='my-2'>
+                        Przepisz podane zdanie do komórki poniżej. Pamiętaj, liczy się nie tylko czas ale i poprawność. Czas liczy się od momentu wprowadzenia pierwszej litery do wprowadzenia ostatniej. Ostateczny wynik to suma czasu przepisywania i kary za błądy (pół sekundy za każdy błąd). Im mniej punktów tym lepiej. Masz {repetitions} prób. Liczy się tylko wynik z najleszpej próby.
+                    </div>
+                    
+                    <div className='col-12'>
+                        <div className='fs-2 text-danger fw-bold mt-2'>Konkurs nie jest aktualnie aktywny</div>
+                    </div>
+                </div>
+            </HiddenLayout>
+        );
+    }
     
     return (
         <HiddenLayout title="konkurs">
@@ -156,7 +179,7 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
                                 <div className='offset-1 col-2'>punkty</div>
                             </div>
                         {results.map((result, i) => 
-                            <div className='col-6 row border-bottom'>
+                            <div className='col-6 row border-bottom' key={result.time}>
                                 <div className='col-1'>{i}.</div> 
                                 <div className='offset-1 col-3'>{(result.time / 1000).toFixed(3)} s</div>
                                 <div className='offset-1 col-3'>{result.typos} błędów</div>
@@ -186,6 +209,12 @@ export async function getServerSideProps({ query }) {
           }
     }
 
+    let isActive = true;
+    const now = Date.now();
+    if(now < competition.start_at || now > competition.end_at){
+        isActive = false;
+    }
+
     return { props: {
         competitionCode: code, 
         competition_id: competition.id, 
@@ -193,5 +222,6 @@ export async function getServerSideProps({ query }) {
         classNumber: classNumber, 
         phrase: competition.phrase,
         repetitions: competition.repetitions,
+        isActive: isActive,
     } }
 }

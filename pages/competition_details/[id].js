@@ -10,6 +10,9 @@ export default function CompetitionDetails( {code, teacher, phrase, repetitions,
                 <div>
                     <h1>Konkurs Szybkiego Pisania</h1>
                 </div>
+                <div className='my-2'>
+                    Uczniowie, aby wziąć udział w konkursie muszą znać kod dostępu. Na tej stronie przedstawione zostaną wyniki konkursu. Aby mieć do nich dostęp można dodać stronę do zakładek, lub zapisć adres url.
+                </div>
                 <div className="border-start border-primary-subtle border-3 ps-2">
                     <div className="row"> <div className="col-3">kod dostępu:</div> <div className="col-9 fw-bold">{code}</div></div>
                     <div className="row"> <div className="col-3">nauczyciel:</div> <div className="col-9 fw-bold">{teacher}</div></div>

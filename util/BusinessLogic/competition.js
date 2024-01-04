@@ -35,13 +35,13 @@ export async function linkDataWithCompetition(data_id, competition_id){
 export async function saveDataInCompetition(data, competition_id){
     const competition = await storage.getCompetition(competition_id);
     if(!competition){
-        return undefined;
+        return null;
     }
     const now = Date.now();
     if(now < competition.start_at || now > competition.end_at){
-        return undefined;
+        return null;
     }
-    
+
     return await storage.saveDataInCompetition(data, competition_id);
 }
 
