@@ -4,8 +4,13 @@ import * as bl from "../../../../util/BusinessLogic/competition"
 
 export async function GET(request, { params }) {
     const id = parseInt(params.id);
-    if(Number.isNaN(id)){
-        return new Response(null, { status: 400 });
+    if(Number.isNaN(id) || params.id.length > 7){
+        const code = params.id;
+        const c_res = await bl.getByCode(code);
+        if(!c_res){
+            return new Response(null, { status: 404 });
+        }
+        return Response.json(c_res, { status: 200 });
     }
 
     try {

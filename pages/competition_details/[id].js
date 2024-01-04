@@ -10,17 +10,17 @@ export default function CompetitionDetails( {code, teacher, phrase, repetitions,
                 <div>
                     <h1>Konkurs Szybkiego Pisania</h1>
                 </div>
-                <div>
-                    <div>kod dostępu <span>{code}</span></div>
-                    <div>nauczyciel: <span>{teacher}</span></div>
-                    <div>tekst do przepisania: <span>{phrase}</span></div>
-                    <div>ilosć powtórzeń: <span>{repetitions}</span></div>
-                    <div>początek: <span>{startAt}</span></div>
-                    <div>koniec: <span>{EndAt}</span></div>
+                <div className="border-start border-primary-subtle border-3 ps-2">
+                    <div className="row"> <div className="col-3">kod dostępu:</div> <div className="col-9 fw-bold">{code}</div></div>
+                    <div className="row"> <div className="col-3">nauczyciel:</div> <div className="col-9 fw-bold">{teacher}</div></div>
+                    <div className="row"> <div className="col-3">tekst do przepisania:</div> <div className="col-9 fw-bold">{phrase}</div></div>
+                    <div className="row"> <div className="col-3">ilosć powtórzeń:</div> <div className="col-9 fw-bold">{repetitions}</div></div>
+                    <div className="row"> <div className="col-3">początek:</div> <div className="col-9 fw-bold">{startAt}</div></div>
+                    <div className="row"> <div className="col-3">koniec:</div> <div className="col-9 fw-bold">{EndAt}</div></div>
                 </div>
             </div>
 
-            <div className='col-6 row border-bottom border-3 fw-bold'>
+            <div className='col-12 col-xl-8 row border-bottom border-3 fw-bold'>
                 <div className='col-2'>miejsce</div> 
                 <div className='col-1'>klasa</div> 
                 <div className='col-1'>nr</div> 
@@ -30,7 +30,7 @@ export default function CompetitionDetails( {code, teacher, phrase, repetitions,
                 <div className='col-2'>ilosc prob</div>
             </div>
         {results.map((result, i) => 
-            <div className='col-6 row border-bottom'>
+            <div className='col-12 col-xl-8 row border-bottom' key={result.result.username}>
                 <div className='col-2'>{i}.</div> 
                 <div className='col-1'>{result.result.classNumber}</div> 
                 <div className='col-1'>{result.result.studentNumber}</div> 

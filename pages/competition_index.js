@@ -44,7 +44,7 @@ export default function CompetitionIndex() {
                             <input type="text" className="form-control" placeholder="12" value={studentNumber} onChange={handleChangeStudentNumber}/>
                         </div>
                         <div className="col-12">
-                        <Link href={`/competition?code=${code}&class=${classNumber}&student=${studentNumber}`}>Dołącz</Link>
+                            <Link href={`/competition?code=${code}&class=${classNumber}&student=${studentNumber}`} className='col-12'><input type='button' className='btn btn-primary col-12' value="Dołącz" /></Link>
                         </div>
                     </form>
                 </div>

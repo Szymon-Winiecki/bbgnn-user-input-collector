@@ -83,7 +83,7 @@ export async function getResultsForCompetitions(competition_id){
         })
     });
 
-    const topResults = new Map();
+    let topResults = new Map();
 
     results.forEach(r => {
         if(!topResults.has(r.username)){
@@ -99,7 +99,11 @@ export async function getResultsForCompetitions(competition_id){
             t.result = r;
         }
     });
-    return Array.from(topResults.values());
+
+    topResults = Array.from(topResults.values());
+
+    topResults.sort((a, b) => a.result.score - b.result.score);
+    return topResults;
 }
 
 const CODE_LENGTH = 8;
