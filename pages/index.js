@@ -19,3 +19,14 @@ export default function Home() {
     </Layout>
   );
 }
+
+
+export async function getServerSideProps() {
+
+  return {
+      redirect: {
+        permanent: false,
+        destination: "/competition_index"
+      }
+    }
+}
