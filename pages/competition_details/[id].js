@@ -1,5 +1,6 @@
 import HiddenLayout from "../../components/hidden_layout";
 import * as bl from "../../util/BusinessLogic/competition";
+import { timestampToDateTimeString } from "../../util/formatingUtils";
 
 
 export default function CompetitionDetails( {code, teacher, phrase, repetitions, startAt, EndAt, results} ) {
@@ -18,8 +19,8 @@ export default function CompetitionDetails( {code, teacher, phrase, repetitions,
                     <div className="row"> <div className="col-3">nauczyciel:</div> <div className="col-9 fw-bold">{teacher}</div></div>
                     <div className="row"> <div className="col-3">tekst do przepisania:</div> <div className="col-9 fw-bold">{phrase}</div></div>
                     <div className="row"> <div className="col-3">ilosć powtórzeń:</div> <div className="col-9 fw-bold">{repetitions}</div></div>
-                    <div className="row"> <div className="col-3">początek:</div> <div className="col-9 fw-bold">{startAt}</div></div>
-                    <div className="row"> <div className="col-3">koniec:</div> <div className="col-9 fw-bold">{EndAt}</div></div>
+                    <div className="row"> <div className="col-3">początek:</div> <div className="col-9 fw-bold">{timestampToDateTimeString(startAt)}</div></div>
+                    <div className="row"> <div className="col-3">koniec:</div> <div className="col-9 fw-bold">{timestampToDateTimeString(EndAt)}</div></div>
                 </div>
             </div>
 
