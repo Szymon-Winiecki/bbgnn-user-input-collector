@@ -98,7 +98,6 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
     }
 
     function handleInputChange(event){
-        if(event.target.value.length > input.length)
         setInput(old => (event.target.value.length - old.length > 2) ? old : event.target.value);
     }
 
