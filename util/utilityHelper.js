@@ -17,3 +17,12 @@ export function randomAlphanumString(length){
     }
     return result.join('');
 }
+
+export function includesCharacter(text, characters){
+    for(let i = 0; i < characters.length; ++i){
+        if(text.includes(characters[i])){
+            return true;
+        }
+    }
+    return false;
+}

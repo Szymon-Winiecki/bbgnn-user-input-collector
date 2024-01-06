@@ -182,9 +182,9 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
                                 <div className='col-1'>{i}.</div> 
                                 <div className='offset-1 col-3'>{(result.time / 1000).toFixed(3)} s</div>
                                 <div className='offset-1 col-3'>{result.typos} błędów</div>
-                                <div className='offset-1 col-2'>{result.score.toFixed(3)}</div>
+                                <div className='offset-1 col-2'>{result.score?.toFixed(3)}</div>
                             </div> )}
-                        <div className='mt-2'>najlepszy wynik: <span className='fw-bold'>{results.reduce((prev, curr) => curr.score < prev ? curr.score.toFixed(3) : prev, 100000)}</span></div>
+                        <div className='mt-2'>najlepszy wynik: <span className='fw-bold'>{results.length > 0 ? results.reduce((prev, curr) => curr.score < prev ? curr.score.toFixed(3) : prev, 100000) : '---'}</span></div>
                     </div>
                 </div>
             </div>

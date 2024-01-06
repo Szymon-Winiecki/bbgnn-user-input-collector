@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import HiddenLayout from '../components/hidden_layout';
 import Link from 'next/link';
+import { includesCharacter } from '../util/utilityHelper';
 
 export default function CompetitionIndex() {
 
@@ -8,15 +9,23 @@ export default function CompetitionIndex() {
     const [classNumber, setClassNumber] = useState('');
     const [studentNumber, setStudentNumber] = useState('');
 
+    const forbiddenCharacters = "_${}()~+=*/&^%#@";
+
     function handleChangeCode(event){
         setCode(event.target.value);
     }
 
     function handleChangeClassNumber(event){
+        if(includesCharacter(event.target.value, forbiddenCharacters)){
+            return;
+        }
         setClassNumber(event.target.value);
     }
 
     function handleChangeStudentNumber(event){
+        if(includesCharacter(event.target.value, forbiddenCharacters)){
+            return;
+        }
         setStudentNumber(event.target.value);
     }
     
@@ -37,11 +46,11 @@ export default function CompetitionIndex() {
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text col-3">klasa</span>
-                            <input type="text" className="form-control" placeholder="5A" value={classNumber} onChange={handleChangeClassNumber}/>
+                            <input type="text" className="form-control" placeholder="5A" required value={classNumber} onChange={handleChangeClassNumber}/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text col-3">numer z dziennika</span>
-                            <input type="text" className="form-control" placeholder="12" value={studentNumber} onChange={handleChangeStudentNumber}/>
+                            <input type="text" className="form-control" placeholder="12" required value={studentNumber} onChange={handleChangeStudentNumber}/>
                         </div>
                         <div className="col-12">
                             <Link href={`/competition?code=${code}&class=${classNumber}&student=${studentNumber}`} className='col-12'><input type='button' className='btn btn-primary col-12' value="Dołącz" /></Link>
