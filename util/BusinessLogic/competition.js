@@ -4,6 +4,8 @@ import { randomAlphanumString } from '../utilityHelper';
 import { getTypingTime, retrieveEnteredPhrase } from '../Analysis/sequenceAnalysis';
 import { getErrorsCount } from '../Analysis/phraseAnalysis';
 
+const typoPenalty = 1.0;
+
 export async function getAll(){
     return await storage.getAllCompetitions();
 }
@@ -63,7 +65,7 @@ export async function getResultsForUser(username){
     data.forEach(d => {
         const time = getTypingTime(d.sequence);
         const typos = getErrorsCount(d.phrase, retrieveEnteredPhrase(d.sequence));
-        const score = time / 1000 + typos * 0.5;
+        const score = time / 1000 + typos * typoPenalty;
         results.push({
             time: time,
             typos: typos,
@@ -80,7 +82,7 @@ export async function getResultsForCompetitions(competition_id){
     data.forEach(d => {
         const time = getTypingTime(d.sequence);
         const typos = getErrorsCount(d.phrase, retrieveEnteredPhrase(d.sequence));
-        const score = time / 1000 + typos * 0.5;
+        const score = time / 1000 + typos * typoPenalty;
         const username_parts = d.user.split('_');
         results.push({
             username: d.user,
