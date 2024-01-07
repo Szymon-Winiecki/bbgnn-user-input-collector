@@ -35,7 +35,7 @@ export default function CompetitionDetails( {code, teacher, phrase, repetitions,
             </div>
         {results.map((result, i) => 
             <div className='col-12 col-xl-8 row border-bottom' key={result.result.username}>
-                <div className='col-2'>{i}.</div> 
+                <div className='col-2'>{i+1}.</div> 
                 <div className='col-1'>{result.result.classNumber}</div> 
                 <div className='col-1'>{result.result.studentNumber}</div> 
                 <div className='col-2'>{(result.result.time / 1000).toFixed(3)} s</div>

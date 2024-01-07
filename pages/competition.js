@@ -140,7 +140,7 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
                     <div className='row'> <div className='col-3'>klasa:</div> <div className='fw-bold col-9'>{classNumber}</div></div>
                 </div>
                 <div className='my-2'>
-                    Przepisz podane zdanie do komórki poniżej. Pamiętaj, liczy się nie tylko czas ale i poprawność. Czas liczy się od momentu wprowadzenia pierwszej litery do wprowadzenia ostatniej. Ostateczny wynik to suma czasu przepisywania i kary za błądy (pół sekundy za każdy błąd). Im mniej punktów tym lepiej. Masz {repetitions} prób. Liczy się tylko wynik z najleszpej próby.
+                    Przepisz podane zdanie do komórki poniżej. Pamiętaj, liczy się nie tylko czas ale i poprawność. Czas liczy się od momentu wprowadzenia pierwszej litery do wprowadzenia ostatniej. Ostateczny wynik to suma czasu przepisywania i kary za błądy (pół sekundy za każdy błąd). Im mniej punktów tym lepiej. Masz {repetitions} prób. Liczy się tylko wynik z najlepszej próby.
                 </div>
                 
                 <div className='col-12'>
@@ -179,7 +179,7 @@ export default function CompetitionIndex( {competitionCode, competition_id, stud
                             </div>
                         {results.map((result, i) => 
                             <div className='col-6 row border-bottom' key={result.time}>
-                                <div className='col-1'>{i}.</div> 
+                                <div className='col-1'>{i+1}.</div> 
                                 <div className='offset-1 col-3'>{(result.time / 1000).toFixed(3)} s</div>
                                 <div className='offset-1 col-3'>{result.typos} błędów</div>
                                 <div className='offset-1 col-2'>{result.score?.toFixed(3)}</div>
