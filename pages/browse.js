@@ -29,7 +29,10 @@ export default function Browse( ) {
         sortField: '',
         sortAsc: true,
         users: [],
+        maxTypos: undefined,
         phrase: '',
+        minCompetitionDataCount: 0,
+        minUserDataCount: 0
     });
 
     const toastManager = new ToastManager(setToasts);
@@ -163,6 +166,33 @@ export default function Browse( ) {
         })
     }
 
+    function handleTyposChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            if(event.target.value >= 0)
+                newq.maxTypos = event.target.value;
+            else
+                newq.maxTypos = undefined;
+            return newq;
+        })
+    }
+
+    function handleMinUserDataCountChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.minUserDataCount = event.target.value;
+            return newq;
+        })
+    }
+
+    function handleMinCompetitionDataCountChange(event){
+        setQuery(old => {
+            const newq = { ...old };
+            newq.minCompetitionDataCount = event.target.value;
+            return newq;
+        })
+    }
+
     function handleChangePage(page){
         setPage(page);
     }
@@ -192,6 +222,12 @@ export default function Browse( ) {
                         <CollectedDataFilters 
                             allUsers={usernames}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
+                            typos={query.maxTypos}
+                            OnTyposChange={handleTyposChange}
+                            minUserDataCount={query.minUserDataCount}
+                            OnMinUserDataCountChange={handleMinUserDataCountChange}
+                            minCompetitionDataCount={query.minCompetitionDataCount}
+                            OnMinCompetitionrDataCountChange={handleMinCompetitionDataCountChange}
                             OnApplyClick={handleApplyFilters} 
                             sortField={query.sortField}
                             OnSortFieldChange={handleSortFieldChange}

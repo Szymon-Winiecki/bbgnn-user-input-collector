@@ -1,3 +1,4 @@
+import { calculateAdditionalInfo, groupByCompetition, groupByUser } from '../../Analysis/dataAnalysis';
 import { recordsOnPage } from '../../utilityHelper';
 import { AppDatabase } from './AppDatabase';
 import { storageFilePath } from './common';
@@ -28,12 +29,36 @@ export async function select(query){
     let records = await readAll();
     records = Array.from(records);
 
+    calculateAdditionalInfo(records);
     records = records.filter(record => checkSelectConditions(record, query));
 
-    const numericFieds = ['finishDate', 'id'];
+    if(query.minUserDataCount){
+        const groupedByUser = groupByUser(records);
+        const users = Array.from(groupedByUser.keys())
+        for(let i = 0; i < users.length; ++i){
+            if(groupedByUser.get(users[i]).length < query.minUserDataCount){
+                groupedByUser.delete(users[i]);
+            }
+        }
+
+        records = Array.from(groupedByUser.values()).flat();
+    }
+
+    if(query.minCompetitionDataCount){
+        const groupedByCompetition = groupByCompetition(records);
+        const competitions = Array.from(groupedByCompetition.keys())
+        for(let i = 0; i < competitions.length; ++i){
+            if(groupedByCompetition.get(competitions[i]).length < query.minCompetitionDataCount){
+                groupedByCompetition.delete(competitions[i]);
+            }
+        }
+
+        records = Array.from(groupedByCompetition.values()).flat();
+    }
+
+    const numericFieds = ['finishDate', 'id', 'typos'];
     const textFields = ['user', 'phrase'];
 
-    
     if(query.sortField){
         const asc = query.sortAsc == 'false' ? false : true;
         if(numericFieds.includes(query.sortField)){
@@ -125,7 +150,9 @@ function checkSelectConditions(record, query){
     if(query.dateMax && record.finishDate > query.dateMax) return false;
     if(query.phrase && record.phrase != query.phrase) return false;
     if(query.users && !query.users.includes(record.user)) return false;
-    
+    if(query.maxTypingTime && record.typingTime > query.maxTypingTime) return false;
+    if(query.maxTypos != undefined && record.typos > query.maxTypos) return false;
+
     return true;
 }
 

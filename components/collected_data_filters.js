@@ -1,5 +1,5 @@
 
-export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
+export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, typos, OnTyposChange, minUserDataCount, OnMinUserDataCountChange, minCompetitionDataCount, OnMinCompetitionrDataCountChange, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
 
     return (
         <div className="col-10 offset-1 row g-2">
@@ -13,6 +13,7 @@ export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases,
                     <option value="finishDate">Date</option>
                     <option value="user">User</option>
                     <option value="phrase">Phrase</option>
+                    <option value="typos">Typos</option>
                 </select>
                 <select className="form-select" value={sortOrder} onChange={OnSortOrderChange} >
                     <option value="asc">Asc</option>
@@ -47,6 +48,21 @@ export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases,
                         return <option value={phrase} key={index}></option>
                     })}
                 </datalist>
+            </div>
+
+            <div className="input-group mb-3">
+                <label className="input-group-text">Max typos (-1 = inf)</label>
+                <input type="number" min="-1" className="form-control" value={typos} onChange={OnTyposChange} />
+            </div>
+
+            <div className="input-group mb-3">
+                <label className="input-group-text">Min records per user</label>
+                <input type="number" min="0" className="form-control" value={minUserDataCount} onChange={OnMinUserDataCountChange} />
+            </div>
+
+            <div className="input-group mb-3">
+                <label className="input-group-text">Min records per competition</label>
+                <input type="number" min="0" className="form-control" value={minCompetitionDataCount} onChange={OnMinCompetitionrDataCountChange} />
             </div>
 
             <div className="col-12">
