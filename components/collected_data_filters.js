@@ -1,5 +1,5 @@
 
-export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, typos, OnTyposChange, minUserDataCount, OnMinUserDataCountChange, minCompetitionDataCount, OnMinCompetitionrDataCountChange, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
+export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, typos, OnTyposChange, minUserDataCount, OnMinUserDataCountChange, minCompetitionDataCount, OnMinCompetitionrDataCountChange, maxTimeDeviation, OnMaxTimeDeviationChange, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
 
     return (
         <div className="col-10 offset-1 row g-2">
@@ -63,6 +63,12 @@ export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases,
             <div className="input-group mb-3">
                 <label className="input-group-text">Min records per competition</label>
                 <input type="number" min="0" className="form-control" value={minCompetitionDataCount} onChange={OnMinCompetitionrDataCountChange} />
+            </div>
+
+            <div className="input-group mb-3">
+                <label className="input-group-text">Max time dev from the user's mean (-1 = inf)</label>
+                <input type="number" min="-1" className="form-control" value={maxTimeDeviation} onChange={OnMaxTimeDeviationChange} />
+                <label className="input-group-text">%</label>
             </div>
 
             <div className="col-12">

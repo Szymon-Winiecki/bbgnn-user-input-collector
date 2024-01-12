@@ -25,6 +25,17 @@ export default function Browse( ) {
    
     const [toasts, setToasts] = useState([]);
 
+    const [filterValues, setFilterValues] = useState({
+        sortField: '',
+        sortAsc: true,
+        users: [],
+        maxTypos: -1,
+        phrase: '',
+        minCompetitionDataCount: 0,
+        minUserDataCount: 0,
+        maxTimeDeviationFromUserMean: -1,
+    });
+
     const [query, setQuery] = useState({
         sortField: '',
         sortAsc: true,
@@ -32,8 +43,11 @@ export default function Browse( ) {
         maxTypos: undefined,
         phrase: '',
         minCompetitionDataCount: 0,
-        minUserDataCount: 0
+        minUserDataCount: 0,
+        maxTimeDeviationFromUserMean: undefined,
     });
+
+    
 
     const toastManager = new ToastManager(setToasts);
 
@@ -134,6 +148,12 @@ export default function Browse( ) {
     }
 
     function handleSortFieldChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.sortField = event.target.value;
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.sortField = event.target.value;
@@ -142,6 +162,12 @@ export default function Browse( ) {
     }
 
     function handleSortOrderChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.sortAsc = (event.target.value === 'asc');
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.sortAsc = (event.target.value === 'asc');
@@ -150,15 +176,26 @@ export default function Browse( ) {
     }
 
     function handleUsersChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.users = Array.from(event.target.selectedOptions).map(o => o.value);
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.users = Array.from(event.target.selectedOptions).map(o => o.value);
             return newq;
         })
-        console.log(Array.from(event.target.selectedOptions).map(o => o.value));
     }
 
     function handlePhraseChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.phrase = event.target.value;
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.phrase = event.target.value;
@@ -167,17 +204,29 @@ export default function Browse( ) {
     }
 
     function handleTyposChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.maxTypos = event.target.value;
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
-            if(event.target.value >= 0)
-                newq.maxTypos = event.target.value;
-            else
+            if(event.target.value == -1)
                 newq.maxTypos = undefined;
+            else
+                newq.maxTypos = event.target.value;
             return newq;
         })
     }
 
     function handleMinUserDataCountChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.minUserDataCount = event.target.value;
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.minUserDataCount = event.target.value;
@@ -186,9 +235,32 @@ export default function Browse( ) {
     }
 
     function handleMinCompetitionDataCountChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.minCompetitionDataCount = event.target.value;
+            return newq;
+        })
+
         setQuery(old => {
             const newq = { ...old };
             newq.minCompetitionDataCount = event.target.value;
+            return newq;
+        })
+    }
+
+    function handleMaxTimeDeviationChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.maxTimeDeviationFromUserMean = event.target.value;
+            return newq;
+        })
+
+        setQuery(old => {
+            const newq = { ...old };
+            if(event.target.value == -1)
+                newq.maxTimeDeviationFromUserMean = undefined;
+            else
+                newq.maxTimeDeviationFromUserMean = event.target.value / 100;
             return newq;
         })
     }
@@ -222,20 +294,22 @@ export default function Browse( ) {
                         <CollectedDataFilters 
                             allUsers={usernames}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
-                            typos={query.maxTypos}
+                            typos={filterValues.maxTypos}
                             OnTyposChange={handleTyposChange}
-                            minUserDataCount={query.minUserDataCount}
+                            minUserDataCount={filterValues.minUserDataCount}
                             OnMinUserDataCountChange={handleMinUserDataCountChange}
-                            minCompetitionDataCount={query.minCompetitionDataCount}
+                            minCompetitionDataCount={filterValues.minCompetitionDataCount}
                             OnMinCompetitionrDataCountChange={handleMinCompetitionDataCountChange}
+                            maxTimeDeviation={filterValues.maxTimeDeviationFromUserMean}
+                            OnMaxTimeDeviationChange={handleMaxTimeDeviationChange}
                             OnApplyClick={handleApplyFilters} 
-                            sortField={query.sortField}
+                            sortField={filterValues.sortField}
                             OnSortFieldChange={handleSortFieldChange}
-                            sortOrder={query.sortAsc ? 'asc' : 'desc'}
+                            sortOrder={filterValues.sortAsc ? 'asc' : 'desc'}
                             OnSortOrderChange={handleSortOrderChange}
-                            users={query.users}
+                            users={filterValues.users}
                             OnUsersChange={handleUsersChange}
-                            phrase={query.phrase}
+                            phrase={filterValues.phrase}
                             OnPhraseChange={handlePhraseChange} />
                     </div>
                 </div>

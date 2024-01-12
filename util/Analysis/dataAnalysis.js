@@ -42,3 +42,25 @@ export function groupByCompetition(records){
 
     return competitions;
 }
+
+export function calculateDeviationFromMean(groupedRecords){
+    groupedRecords.forEach( (records) => {
+        let time = 0;
+        let typos = 0;
+
+        records.forEach(record => {
+            time += record.typingTime;
+            typos += record.typos;
+        });
+
+        time /= records.length;
+        typos /= records.length;
+
+        records.forEach(record => {
+            record.timeDeviation = Math.abs(record.typingTime - time) / time;
+            record.typosDeviation = Math.abs(record.typos - typos) / typos;
+        });
+    });
+
+    return groupedRecords;
+}

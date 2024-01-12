@@ -1,4 +1,4 @@
-import { calculateAdditionalInfo, groupByCompetition, groupByUser } from '../../Analysis/dataAnalysis';
+import { calculateAdditionalInfo, calculateDeviationFromMean, groupByCompetition, groupByUser } from '../../Analysis/dataAnalysis';
 import { recordsOnPage } from '../../utilityHelper';
 import { AppDatabase } from './AppDatabase';
 import { storageFilePath } from './common';
@@ -31,6 +31,19 @@ export async function select(query){
 
     calculateAdditionalInfo(records);
     records = records.filter(record => checkSelectConditions(record, query));
+
+    if(!isNaN(query.maxTimeDeviationFromUserMean) || !isNaN(query.maxTyposDeviationFromUserMean)){
+        const groupedByUser = groupByUser(records);
+        calculateDeviationFromMean(groupedByUser);
+        records = Array.from(groupedByUser.values()).flat();
+
+        if(!isNaN(query.maxTimeDeviationFromUserMean)){
+            records= records.filter(record => record.timeDeviation <= query.maxTimeDeviationFromUserMean);
+        }
+        if(!isNaN(query.maxTyposDeviationFromUserMean)){
+            records= records.filter(record => record.typosDeviation <= query.maxTyposDeviationFromUserMean);
+        }
+    }
 
     if(query.minUserDataCount){
         const groupedByUser = groupByUser(records);
@@ -151,7 +164,7 @@ function checkSelectConditions(record, query){
     if(query.phrase && record.phrase != query.phrase) return false;
     if(query.users && !query.users.includes(record.user)) return false;
     if(query.maxTypingTime && record.typingTime > query.maxTypingTime) return false;
-    if(query.maxTypos != undefined && record.typos > query.maxTypos) return false;
+    if(!isNaN(query.maxTypos) && record.typos > query.maxTypos) return false;
 
     return true;
 }
