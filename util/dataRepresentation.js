@@ -17,7 +17,20 @@ export function eventSequenceToMeanGraph(sequence, label=""){
     for(let i = 0; i < sequence.length; ++i){
         const event = sequence[i];
 
-        const pressingTime = event.keyUpTime - event.keyDownTime;
+        
+        let pressingTime = 0;
+        if(event.keyUpTime == undefined || event.keyUpTime == null){ // if keyUpTime is not registered
+            if(nodes.has(event.key)){
+                pressingTime = nodes.get(event.key).avgPressingTime;    // use avg pressing time for this key if key was used before
+            }
+            else{
+                pressingTime = 0;   // or 0 if not
+            }
+        }
+        else{
+            pressingTime = event.keyUpTime - event.keyDownTime;
+        }
+
         if(nodes.has(event.key)){
             const node = nodes.get(event.key);
             node.avgPressingTime = (node.avgPressingTime * node.numberOfEvents + pressingTime) / (node.numberOfEvents + 1);
