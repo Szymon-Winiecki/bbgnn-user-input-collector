@@ -22,6 +22,10 @@ const schema = Joi.object({
         }))
         .required(),
 
+    retypedPhrase: Joi.string().allow(''),
+    typingTime: Joi.number(),
+    typos: Joi.number()
+
 });
 
 
@@ -75,9 +79,9 @@ export function deserializeInputData(serialzied){
 }
 
 function isValid(obj){
-    const validation =schema.validate(obj);
-    console.log(validation);
+    const validation = schema.validate(obj);
     if(validation.error){
+        console.log(validation);
         return false;
     }
     return true;
