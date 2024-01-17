@@ -93,8 +93,13 @@ export async function select(query){
     }
 }
 
-export async function save(data){
-    const db = new AppDatabase(storageFilePath);
+export async function save(data, db){
+    let close_db = false;
+    if(!db){
+        console.log("open db");
+        close_db = true
+        db = new AppDatabase(storageFilePath);
+    }
 
     let user_id = await db.getUserId(data.user);
     if(user_id == undefined){
@@ -113,14 +118,23 @@ export async function save(data){
 
     const dataInfo = await db.insertDataInfo(user_id, phrase_id, sequence_id, data.finishDate);
 
+    if(close_db){
+        await db.close();
+    }
+
     return dataInfo?.id;
 }
 
-export function saveMany(data){
+export async function saveMany(data){
+    const db = new AppDatabase(storageFilePath);
     const ids = [];
-    data.forEach(d => {
-       ids.push(save(d));
-    });
+    for(const d of data){
+        const id = await save(d, db)
+        ids.push(id);
+    }
+
+    
+    await db.close();
 
     return ids;
 }
@@ -149,12 +163,17 @@ export async function remove(id, deleteUserIfOrphan=false, deletePhraseIfOrphan=
         //TODO
     }
 
+    await db.close();
+
     return true;
 }
 
 export async function getAllUsernames(){
     const db = new AppDatabase(storageFilePath);
     const users = await db.getAllUsernames();
+
+    await db.close();
+
     return users.map(user => user.username);
 }
 

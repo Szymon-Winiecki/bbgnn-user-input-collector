@@ -54,6 +54,16 @@ export class AppDatabase{
         this.#db = new SQLite_DB(db_filename);
     }
 
+    async close(){
+        try{
+            return await this.#db.close();
+        }
+        catch(e){
+            console.error(e);
+        }
+        
+    }
+
     /*
     * USERS
     */
