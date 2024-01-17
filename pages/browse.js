@@ -31,6 +31,7 @@ export default function Browse( ) {
         users: [],
         maxTypos: -1,
         phrase: '',
+        limitRecordsPerUser : -1,
         minCompetitionDataCount: 0,
         minUserDataCount: 0,
         maxTimeDeviationFromUserMean: -1,
@@ -42,6 +43,7 @@ export default function Browse( ) {
         users: [],
         maxTypos: undefined,
         phrase: '',
+        limitRecordsPerUser: undefined,
         minCompetitionDataCount: 0,
         minUserDataCount: 0,
         maxTimeDeviationFromUserMean: undefined,
@@ -203,6 +205,23 @@ export default function Browse( ) {
         })
     }
 
+    function handleRecordsPerUserLimitChange(event){
+        setFilterValues(old => {
+            const newq = { ...old };
+            newq.limitRecordsPerUser = event.target.value;
+            return newq;
+        })
+
+        setQuery(old => {
+            const newq = { ...old };
+            if(event.target.value == -1)
+                newq.limitRecordsPerUser = undefined;
+            else
+                newq.limitRecordsPerUser = event.target.value;
+            return newq;
+        })
+    }
+
     function handleTyposChange(event){
         setFilterValues(old => {
             const newq = { ...old };
@@ -294,6 +313,8 @@ export default function Browse( ) {
                         <CollectedDataFilters 
                             allUsers={usernames}
                             phrases={["Ala ma kota", "Jola ma jeża"]}
+                            recordsPerUserLimit={filterValues.limitRecordsPerUser}
+                            OnRecordsPerUserLimitChange={handleRecordsPerUserLimitChange}
                             typos={filterValues.maxTypos}
                             OnTyposChange={handleTyposChange}
                             minUserDataCount={filterValues.minUserDataCount}

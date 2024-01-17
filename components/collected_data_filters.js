@@ -1,5 +1,5 @@
 
-export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, typos, OnTyposChange, minUserDataCount, OnMinUserDataCountChange, minCompetitionDataCount, OnMinCompetitionrDataCountChange, maxTimeDeviation, OnMaxTimeDeviationChange, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
+export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases, recordsPerUserLimit, OnRecordsPerUserLimitChange, typos, OnTyposChange, minUserDataCount, OnMinUserDataCountChange, minCompetitionDataCount, OnMinCompetitionrDataCountChange, maxTimeDeviation, OnMaxTimeDeviationChange, OnApplyClick, sortField, OnRecordsOnPageChange, OnSortFieldChange, sortOrder, OnSortOrderChange, users, OnUsersChange, phrase, OnPhraseChange }) {
 
     return (
         <div className="col-10 offset-1 row g-2">
@@ -48,6 +48,11 @@ export default function CollectedDataFilters({ recordsOnPage, allUsers, phrases,
                         return <option value={phrase} key={index}></option>
                     })}
                 </datalist>
+            </div>
+            
+            <div className="input-group mb-3">
+                <label className="input-group-text">limit records per user (-1 = inf)</label>
+                <input type="number" min="-1" className="form-control" value={recordsPerUserLimit} onChange={OnRecordsPerUserLimitChange} />
             </div>
 
             <div className="input-group mb-3">

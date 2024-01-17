@@ -69,6 +69,13 @@ export async function select(query){
         records = Array.from(groupedByCompetition.values()).flat();
     }
 
+    if(!isNaN(query.limitRecordsPerUser)){
+        const groupedByUser = groupByUser(records);
+        groupedByUser.forEach(userRecords => userRecords.splice(query.limitRecordsPerUser) );
+
+        records = Array.from(groupedByUser.values()).flat();
+    }
+
     const numericFieds = ['finishDate', 'id', 'typos'];
     const textFields = ['user', 'phrase'];
 
