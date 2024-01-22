@@ -1,5 +1,5 @@
 import { calculateAdditionalInfo, calculateDeviationFromMean, groupByCompetition, groupByUser } from '../../Analysis/dataAnalysis';
-import { recordsOnPage } from '../../utilityHelper';
+import { recordsOnPage, shuffle } from '../../utilityHelper';
 import { AppDatabase } from './AppDatabase';
 import { storageFilePath } from './common';
 
@@ -70,6 +70,7 @@ export async function select(query){
     }
 
     if(!isNaN(query.limitRecordsPerUser)){
+        // shuffle(records)
         const groupedByUser = groupByUser(records);
         groupedByUser.forEach(userRecords => userRecords.splice(query.limitRecordsPerUser) );
 
