@@ -85,11 +85,38 @@ export default function Demo( {phrase} ) {
         const response = await DemoAppAPI.predict(collectedDataToTorchData([currentInputData.current.GetAsSerializableObject()]))
 
         if(response.ok){
-            setPrediction(response.body)
+            setPrediction(translateNames(response.body))
         }
         else{
             console.log(`Prediction query failed with status  ${response.status}`);
         }
+    }
+
+    function translateNames(prediction){
+        const translator = new Map([
+            ["Szymon",  "Szymon"],
+            ["mama_szymona", "Anna"],
+            ["Pawel", "Paweł"],
+            ["brat_miko", "Mikołaj"],
+            ["tata_moniki", "Przemysław"],
+            ["Patryk", "Patryk"],
+            ["mama_moniki", "Agnieszka"],
+            ["tata_szymona", "Andrzej"],
+            ["Ksawery", "Ksawery"],
+            ["Monika","Monika"]
+        ])
+
+        prediction.probabilities.forEach(p => {
+            if(translator.has(p[0])){
+                p[0] = translator.get(p[0]);
+            }
+        });
+
+        if(translator.has(prediction.username[0])){
+            prediction.username = translator.get(prediction.username[0]);
+        }
+
+        return prediction;
     }
 
     return (
@@ -109,7 +136,7 @@ export default function Demo( {phrase} ) {
                             OnKeyDown={registerKeyDown} 
                             OnKeyUp={registerKeyUp} 
                             OnInputBlur={handleInputBlur}
-                            blurAlertText={"Jeżeli klikniesz poza pole tekstowe, zbieranie danych zostanie automatycznie zakończone"}
+                            blurAlertText={"Kliknięcie poza pole tekstowe, automatycznie zakończy zbieranie danych"}
                             resetInfoText={"Zbieranie danych zakończone, naciśnij Anuluj, aby zresetować pole tekstowe"}
                             encouragementText={"Wpisz pierwszy znak, aby rozpocząć zbieranie zbieranie danych"}/>
 
